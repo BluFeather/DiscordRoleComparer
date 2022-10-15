@@ -6,10 +6,10 @@ namespace DiscordRoleComparer
 {
     public static class PatreonCsvParser
     {
-        public static Dictionary<string, SubscriberRole> ParsePatreonCsvFile(FileInfo csvFile)
+        public static List<PatreonSubscriber> ParsePatreonCsvFile(FileInfo csvFile)
         {
-            Dictionary<string, SubscriberRole> userPatreonRoles = new Dictionary<string, SubscriberRole>();
-
+            List<PatreonSubscriber> result = new List<PatreonSubscriber>();
+            
             using (TextFieldParser parser = new TextFieldParser(csvFile.FullName))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -17,16 +17,21 @@ namespace DiscordRoleComparer
                 while (!parser.EndOfData)
                 {
                     string[] columns = parser.ReadFields();
-                    string username = columns[3];
+
+                    string discordHandle = columns[3];
+                    bool activePatron = columns[4] == "Active patron";
                     SubscriberRole? subscriberRole = SubscriberRoleHelperFunctions.ParseSubscriberRole(columns[9]);
-                    if (!string.IsNullOrEmpty(username) && subscriberRole != null)
+                    double.TryParse(columns[6], out double lifetimeAmount);
+                    
+                    if (string.IsNullOrWhiteSpace(discordHandle) == false)
                     {
-                        userPatreonRoles.Add(username, subscriberRole.GetValueOrDefault());
+                        if (discordHandle == "Discord") continue;
+                        result.Add(new PatreonSubscriber(discordHandle, activePatron, subscriberRole, lifetimeAmount));
                     }
                 }
             }
 
-            return userPatreonRoles;
+            return result;
         }
     }
 }

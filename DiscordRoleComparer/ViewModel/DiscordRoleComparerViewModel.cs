@@ -3,7 +3,6 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace DiscordRoleComparer
         private MainWindow mainWindow;
 
         #region Data Sets
-        Dictionary<string, SubscriberRole> PatreonSubscriberRoles = new Dictionary<string, SubscriberRole>();
+        List<PatreonSubscriber> PatreonSubscriberRoles = new List<PatreonSubscriber>();
 
         Dictionary<string, List<SubscriberRole>> DiscordSubscriberRoles = new Dictionary<string, List<SubscriberRole>>();
         #endregion
@@ -117,7 +116,7 @@ namespace DiscordRoleComparer
             LogMessage("");
             foreach (var subscriber in PatreonSubscriberRoles)
             {
-                LogMessage($"{subscriber.Key} is {subscriber.Value}");
+                LogMessage($"{subscriber.DiscordHandle}  |  {subscriber.ActivePatron}  |  {subscriber.Tier}  |  {subscriber.LifetimeAmount}");
             }
         }
 
