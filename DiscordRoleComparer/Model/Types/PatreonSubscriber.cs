@@ -1,21 +1,29 @@
-﻿namespace DiscordRoleComparer
+﻿using System.Collections.Generic;
+
+namespace DiscordRoleComparer
 {
     public class PatreonSubscriber
     {
-        public PatreonSubscriber(string discordHandle, bool activePatron, SubscriberRole? tier, double lifetimeAmount)
+        public PatreonSubscriber(string discordHandle, bool activePatron, string tier, double lifetimeAmount)
         {
             DiscordHandle = discordHandle;
             ActivePatron = activePatron;
             Tier = tier;
             LifetimeAmount = lifetimeAmount;
+
+            _uniqueTiers.Add(tier);
         }
 
         public string DiscordHandle { get; set; } = "";
 
         public bool ActivePatron { get; set; } = false;
 
-        public SubscriberRole? Tier { get; set; } = null;
+        public string Tier { get; set; } = null;
 
         public double LifetimeAmount { get; set; } = 0;
+
+        private static HashSet<string> _uniqueTiers = new HashSet<string>();
+
+        public static HashSet<string> UniqueTiers { get { return _uniqueTiers; } }
     }
 }

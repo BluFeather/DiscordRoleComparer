@@ -23,7 +23,7 @@ namespace DiscordRoleComparer
         #region Data Sets
         List<PatreonSubscriber> PatreonSubscriberRoles = new List<PatreonSubscriber>();
 
-        Dictionary<string, List<string>> DiscordUserRoles = new Dictionary<string, List<string>>();
+        List<DiscordMember> DiscordUserRoles = new List<DiscordMember>();
         #endregion
 
         #region Discord User Role Repository
@@ -45,7 +45,7 @@ namespace DiscordRoleComparer
             discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordRolesPulled);
         }
 
-        private void OnDiscordRolesPulled(object sender, Dictionary<string, List<string>> discordUserRoles)
+        private void OnDiscordRolesPulled(object sender, List<DiscordMember> discordUserRoles)
         {
             DisableDiscordBotLog();
             DiscordUserRoles = discordUserRoles;
@@ -54,7 +54,7 @@ namespace DiscordRoleComparer
 
             foreach (var discordUser in discordUserRoles)
             {
-                LogMessage($"{discordUser.Key} is {string.Join(", ", discordUser.Value)}");
+                LogMessage($"{discordUser.Handle} is {string.Join(", ", discordUser.Roles)}");
             }
             PullDiscordRolesButtonEnabled = true;
             UpdateButtonEnabledStates();

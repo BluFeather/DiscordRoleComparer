@@ -20,7 +20,7 @@ namespace DiscordRoleComparer
 
                     string discordHandle = columns[3];
                     bool activePatron = columns[4] == "Active patron";
-                    SubscriberRole? subscriberRole = SubscriberRoleHelperFunctions.ParseSubscriberRole(columns[9]);
+                    string subscriberRole = columns[9];
                     double.TryParse(columns[6], out double lifetimeAmount);
                     
                     if (string.IsNullOrWhiteSpace(discordHandle) == false)

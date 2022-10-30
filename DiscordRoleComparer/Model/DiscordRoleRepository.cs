@@ -23,11 +23,11 @@ namespace DiscordRoleComparer
 
         private SocketGuild socketGuild;
 
-        private EventHandler<Dictionary<string, List<string>>> DiscordRolesPulled;
+        private EventHandler<List<DiscordMember>> DiscordRolesPulled;
 
         public Func<LogMessage, Task> Log { get; set; }
 
-        public void PullDiscordPatreonRoles(string token, EventHandler<Dictionary<string, List<String>>> DiscordRolesPulledCallback)
+        public void PullDiscordPatreonRoles(string token, EventHandler<List<DiscordMember>> DiscordRolesPulledCallback)
         {
             DiscordRolesPulled = DiscordRolesPulledCallback;
             StartBot(token);
@@ -62,6 +62,36 @@ namespace DiscordRoleComparer
             StopBot();
         }
 
+        private async Task<List<DiscordMember>> AsyncPullDiscordUserRoles()
+        {
+            var discordUserRoles = new List<DiscordMember>();
+
+            IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
+            var guildUsers = users as IGuildUser[] ?? users.ToArray();
+
+            foreach (var guildUser in guildUsers)
+            {
+                string username = $"{guildUser.Username}#{guildUser.Discriminator}";
+                var subscriberRoles = new List<string>();
+                foreach (ulong roleID in guildUser.RoleIds)
+                {
+                    string roleName = socketGuild.GetRole(roleID).ToString();
+                    if (!string.IsNullOrWhiteSpace(roleName))
+                    {
+                        subscriberRoles.Add(roleName);
+                    }
+                }
+
+                if (subscriberRoles.Any())
+                {
+                    discordUserRoles.Add(new DiscordMember(username, subscriberRoles));
+                }
+            }
+
+            return discordUserRoles;
+        }
+
+        /*
         private async Task<Dictionary<string, List<string>>> AsyncPullDiscordUserRoles()
         {
             var discordUserRoles = new Dictionary<string, List<string>>();
@@ -90,5 +120,6 @@ namespace DiscordRoleComparer
 
             return discordUserRoles;
         }
+        */
     }
 }

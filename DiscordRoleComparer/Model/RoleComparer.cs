@@ -6,9 +6,9 @@ namespace DiscordRoleComparer
     {
         private readonly List<PatreonSubscriber> PatreonSubscriberRoles;
 
-        private readonly Dictionary<string, List<string>> DiscordSubscriberRoles;
+        private readonly List<DiscordMember> DiscordSubscriberRoles;
 
-        public RoleComparer(List<PatreonSubscriber> patreonSubscriberRoles, Dictionary<string, List<string>> discordSubscriberRoles)
+        public RoleComparer(List<PatreonSubscriber> patreonSubscriberRoles, List<DiscordMember> discordSubscriberRoles)
         {
             PatreonSubscriberRoles = patreonSubscriberRoles;
             DiscordSubscriberRoles = discordSubscriberRoles;
