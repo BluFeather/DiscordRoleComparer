@@ -23,7 +23,7 @@ namespace DiscordRoleComparer
         #region Data Sets
         List<PatreonSubscriber> PatreonSubscriberRoles = new List<PatreonSubscriber>();
 
-        Dictionary<string, List<SubscriberRole>> DiscordSubscriberRoles = new Dictionary<string, List<SubscriberRole>>();
+        Dictionary<string, List<string>> DiscordUserRoles = new Dictionary<string, List<string>>();
         #endregion
 
         #region Discord User Role Repository
@@ -42,17 +42,17 @@ namespace DiscordRoleComparer
                 return;
             }
             PullDiscordRolesButtonEnabled = false;
-            discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordSubscriberRolesPulled);
+            discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordRolesPulled);
         }
 
-        private void OnDiscordSubscriberRolesPulled(object sender, Dictionary<string, List<SubscriberRole>> userWithSubscriberRoles)
+        private void OnDiscordRolesPulled(object sender, Dictionary<string, List<string>> discordUserRoles)
         {
             DisableDiscordBotLog();
-            DiscordSubscriberRoles = userWithSubscriberRoles;
+            DiscordUserRoles = discordUserRoles;
             LogMessage($"Discord User Roles Retrieved.");
             LogMessage("");
 
-            foreach (var discordUser in userWithSubscriberRoles)
+            foreach (var discordUser in discordUserRoles)
             {
                 LogMessage($"{discordUser.Key} is {string.Join(", ", discordUser.Value)}");
             }
@@ -138,6 +138,8 @@ namespace DiscordRoleComparer
         #region Find Role Mismatches
         public void FindRoleMismatches_Clicked()
         {
+            var comparer = new RoleComparer(PatreonSubscriberRoles, DiscordUserRoles);
+            /*
             try
             {
                 ClearLogMessages();
@@ -174,8 +176,9 @@ namespace DiscordRoleComparer
                 LogMessage("An Exception was encountered within FindRoleMismatches_Clicked()!");
                 LogMessage($"Exception Message: {exception.Message}");
             }
+            */
         }
-
+        /*
         private Dictionary<string, List<SubscriberRole>> FindDiscordUsersWithRoleButNotSubscribed()
         {
             var result = new Dictionary<string, List<SubscriberRole>>();
@@ -246,6 +249,7 @@ namespace DiscordRoleComparer
             }
             return result;
         }
+        */
         #endregion
 
         #region Output Logging
@@ -333,7 +337,7 @@ namespace DiscordRoleComparer
 
         private void UpdateButtonEnabledStates()
         {
-            FindRoleMismatchesButtonEnabled = PatreonSubscriberRoles.Count > 0 && DiscordSubscriberRoles.Count > 0;
+            FindRoleMismatchesButtonEnabled = PatreonSubscriberRoles.Count > 0 && DiscordUserRoles.Count > 0;
         }
         #endregion
 

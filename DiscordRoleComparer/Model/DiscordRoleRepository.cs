@@ -23,13 +23,13 @@ namespace DiscordRoleComparer
 
         private SocketGuild socketGuild;
 
-        private EventHandler<Dictionary<string, List<SubscriberRole>>> SubscriberRolesPulled;
+        private EventHandler<Dictionary<string, List<string>>> DiscordRolesPulled;
 
         public Func<LogMessage, Task> Log { get; set; }
 
-        public void PullDiscordPatreonRoles(string token, EventHandler<Dictionary<string, List<SubscriberRole>>> SubscriberRolesPulledCallback)
+        public void PullDiscordPatreonRoles(string token, EventHandler<Dictionary<string, List<String>>> DiscordRolesPulledCallback)
         {
-            SubscriberRolesPulled = SubscriberRolesPulledCallback;
+            DiscordRolesPulled = DiscordRolesPulledCallback;
             StartBot(token);
         }
 
@@ -58,13 +58,13 @@ namespace DiscordRoleComparer
         {
             socketGuild = arg;
             var DiscordSubscriberRoles = await AsyncPullDiscordUserRoles();
-            SubscriberRolesPulled?.Invoke(null, DiscordSubscriberRoles);
+            DiscordRolesPulled?.Invoke(null, DiscordSubscriberRoles);
             StopBot();
         }
 
-        private async Task<Dictionary<string, List<SubscriberRole>>> AsyncPullDiscordUserRoles()
+        private async Task<Dictionary<string, List<string>>> AsyncPullDiscordUserRoles()
         {
-            var discordUserRoles = new Dictionary<string, List<SubscriberRole>>();
+            var discordUserRoles = new Dictionary<string, List<string>>();
 
             IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
             var guildUsers = users as IGuildUser[] ?? users.ToArray();
@@ -72,16 +72,16 @@ namespace DiscordRoleComparer
             foreach (var guildUser in guildUsers)
             {
                 string username = $"{guildUser.Username}#{guildUser.Discriminator}";
-                var subscriberRoles = new List<SubscriberRole>();
+                var subscriberRoles = new List<string>();
                 foreach (ulong roleID in guildUser.RoleIds)
                 {
                     string roleName = socketGuild.GetRole(roleID).ToString();
-                    SubscriberRole? subscriberRole = SubscriberRoleHelperFunctions.ParseSubscriberRole(roleName);
-                    if (subscriberRole != null)
+                    if (!string.IsNullOrWhiteSpace(roleName))
                     {
-                        subscriberRoles.Add(subscriberRole.GetValueOrDefault());
+                        subscriberRoles.Add(roleName);
                     }
                 }
+
                 if (subscriberRoles.Any())
                 {
                     discordUserRoles.Add(username, subscriberRoles);
