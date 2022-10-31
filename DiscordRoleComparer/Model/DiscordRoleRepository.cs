@@ -2,8 +2,12 @@
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DiscordRoleComparer
 {
@@ -29,8 +33,29 @@ namespace DiscordRoleComparer
 
         public void PullDiscordPatreonRoles(string token, EventHandler<List<DiscordMember>> DiscordRolesPulledCallback)
         {
+#if DEBUG
+            AskForAndParseDiscordUserRolesJson(token, DiscordRolesPulledCallback);
+#else
             DiscordRolesPulled = DiscordRolesPulledCallback;
             StartBot(token);
+#endif
+        }
+
+        public void AskForAndParseDiscordUserRolesJson(string token, EventHandler<List<DiscordMember>> DiscordRolesPulledCallback)
+        {
+            var result = new List<DiscordMember>();
+            DiscordRolesPulled = DiscordRolesPulledCallback;
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string jsonString = File.ReadAllText(fileDialog.FileName);
+                Dictionary<string, List<string>> jsonResult = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(jsonString);
+                foreach(var item in jsonResult)
+                {
+                    result.Add(new DiscordMember(item.Key, item.Value));
+                }
+            }
+            DiscordRolesPulled?.Invoke(null, result);
         }
 
         private async void StartBot(string token)

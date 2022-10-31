@@ -57,6 +57,13 @@ namespace DiscordRoleComparer
                 LogMessage($"{discordUser.Handle} is {string.Join(", ", discordUser.Roles)}");
             }
             PullDiscordRolesButtonEnabled = true;
+
+            LogMessage("");
+            LogMessage($"{DiscordMember.UniqueRoles.Count} Unique Roles Found.");
+            foreach (var role in DiscordMember.UniqueRoles)
+            {
+                LogMessage($"Role: {role}");
+            }
             UpdateButtonEnabledStates();
         }
 
