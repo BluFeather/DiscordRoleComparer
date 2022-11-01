@@ -9,5 +9,7 @@
         public void SaveOutputLog_Clicked();
 
         public void FindRoleMismatches_Clicked();
+
+        public void ManageRoles_Clicked();
     }
 }

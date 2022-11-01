@@ -19,5 +19,7 @@ namespace DiscordRoleComparer
         private void SaveOutputLog_Clicked(object sender, RoutedEventArgs e) => ViewModel?.SaveOutputLog_Clicked();
 
         private void FindRoleMismatches_Clicked(object sender, RoutedEventArgs e) => ViewModel?.FindRoleMismatches_Clicked();
+
+        private void ManageRoles_Clicked(object sender, RoutedEventArgs e) => ViewModel?.ManageRoles_Clicked();
     }
 }

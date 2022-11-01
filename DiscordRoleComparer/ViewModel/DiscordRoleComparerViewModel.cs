@@ -26,6 +26,14 @@ namespace DiscordRoleComparer
         List<DiscordMember> DiscordUserRoles = new List<DiscordMember>();
         #endregion
 
+        #region Manage Roles
+        public void ManageRoles_Clicked()
+        {
+            RoleManagementWindow roleManagementWindow = new RoleManagementWindow();
+            roleManagementWindow.Show();
+        }
+        #endregion
+
         #region Discord User Role Repository
         private DiscordRoleRepository discordRoleRepository;
 

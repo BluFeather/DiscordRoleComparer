@@ -6,65 +6,71 @@
         xmlns:local="clr-namespace:DiscordRoleComparer"
         mc:Ignorable="d"
         Title="Discord Role Comparer" Height="400" Width="800">
-    
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="5"/>
-            <RowDefinition/>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
 
-        <!-- Bot Token Section -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Manage Roles" Click="ManageRoles_Clicked"/>
+        </Menu>
 
-            <TextBlock Text="Bot Token: " VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" VerticalAlignment="Center"
-                     x:Name="TokenTextBox"/>
-        </Grid>
-
-        <!-- CSV and Start Buttons -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Grid Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition Height="5"/>
                 <RowDefinition/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Button Content="Parse Patreon CSV File" Click="SetPatreonCSVFile_Clicked"/>
-            <Button Content="Pull Discord Roles" Click="PullDiscordRoles_Clicked"
+            <!-- Bot Token Section -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Bot Token: " VerticalAlignment="Center"/>
+                <TextBox Grid.Column="2" VerticalAlignment="Center"
+                     x:Name="TokenTextBox"/>
+            </Grid>
+
+            <!-- CSV and Start Buttons -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button Content="Parse Patreon CSV File" Click="SetPatreonCSVFile_Clicked"/>
+                <Button Content="Pull Discord Roles" Click="PullDiscordRoles_Clicked"
                     IsEnabled="{Binding PullDiscordRolesButtonEnabled}" Grid.Column="2"/>
-            <Button Content="Find Role Mismatches" Click="FindRoleMismatches_Clicked"
+                <Button Content="Find Role Mismatches" Click="FindRoleMismatches_Clicked"
                     IsEnabled="{Binding FindRoleMismatchesButtonEnabled}"  Grid.Row="2" Grid.ColumnSpan="3"/>
-        </Grid>
+            </Grid>
 
-        <!-- Logging Box -->
-        <ListBox Grid.Row="4" x:Name="LoggingListBox">
-            <ListBoxItem Content="About:"/>
-            <ListBoxItem Content="Finds discrepancies between a user's subscriber role on Patreon and their assigned role on Discord."/>
-            <ListBoxItem Content=""/>
-            <ListBoxItem Content="Usage:"/>
-            <ListBoxItem Content="1.) Enter Token for the bot to connect with."/>
-            <ListBoxItem Content="2.) Select ''Pull Discord Roles''"/>
-            <ListBoxItem Content="3.) Select a CSV file downloaded from Patreon containing Subscribers and their Tiers."/>
-            <ListBoxItem Content="4.) Select ''Find Role Mismatches''"/>
-        </ListBox>
+            <!-- Logging Box -->
+            <ListBox Grid.Row="4" x:Name="LoggingListBox">
+                <ListBoxItem Content="About:"/>
+                <ListBoxItem Content="Finds discrepancies between a user's subscriber role on Patreon and their assigned role on Discord."/>
+                <ListBoxItem Content=""/>
+                <ListBoxItem Content="Usage:"/>
+                <ListBoxItem Content="1.) Enter Token for the bot to connect with."/>
+                <ListBoxItem Content="2.) Select ''Pull Discord Roles''"/>
+                <ListBoxItem Content="3.) Select a CSV file downloaded from Patreon containing Subscribers and their Tiers."/>
+                <ListBoxItem Content="4.) Select ''Find Role Mismatches''"/>
+            </ListBox>
 
-        <!-- Save Result Button -->
-        <Button Content="Save Output Log" Click="SaveOutputLog_Clicked" Grid.Row="6"
+            <!-- Save Result Button -->
+            <Button Content="Save Output Log" Click="SaveOutputLog_Clicked" Grid.Row="6"
                 Width="150" Height="25" HorizontalAlignment="Left"/>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
