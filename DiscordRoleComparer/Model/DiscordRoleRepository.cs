@@ -2,8 +2,12 @@
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DiscordRoleComparer
 {
@@ -23,14 +27,35 @@ namespace DiscordRoleComparer
 
         private SocketGuild socketGuild;
 
-        private EventHandler<Dictionary<string, List<SubscriberRole>>> SubscriberRolesPulled;
+        private EventHandler<List<DiscordMember>> DiscordRolesPulled;
 
         public Func<LogMessage, Task> Log { get; set; }
 
-        public void PullDiscordPatreonRoles(string token, EventHandler<Dictionary<string, List<SubscriberRole>>> SubscriberRolesPulledCallback)
+        public void PullDiscordPatreonRoles(string token, EventHandler<List<DiscordMember>> DiscordRolesPulledCallback)
         {
-            SubscriberRolesPulled = SubscriberRolesPulledCallback;
+#if DEBUG
+            AskForAndParseDiscordUserRolesJson(token, DiscordRolesPulledCallback);
+#else
+            DiscordRolesPulled = DiscordRolesPulledCallback;
             StartBot(token);
+#endif
+        }
+
+        public void AskForAndParseDiscordUserRolesJson(string token, EventHandler<List<DiscordMember>> DiscordRolesPulledCallback)
+        {
+            var result = new List<DiscordMember>();
+            DiscordRolesPulled = DiscordRolesPulledCallback;
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string jsonString = File.ReadAllText(fileDialog.FileName);
+                Dictionary<string, List<string>> jsonResult = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(jsonString);
+                foreach(var item in jsonResult)
+                {
+                    result.Add(new DiscordMember(item.Key, item.Value));
+                }
+            }
+            DiscordRolesPulled?.Invoke(null, result);
         }
 
         private async void StartBot(string token)
@@ -58,13 +83,13 @@ namespace DiscordRoleComparer
         {
             socketGuild = arg;
             var DiscordSubscriberRoles = await AsyncPullDiscordUserRoles();
-            SubscriberRolesPulled?.Invoke(null, DiscordSubscriberRoles);
+            DiscordRolesPulled?.Invoke(null, DiscordSubscriberRoles);
             StopBot();
         }
 
-        private async Task<Dictionary<string, List<SubscriberRole>>> AsyncPullDiscordUserRoles()
+        private async Task<List<DiscordMember>> AsyncPullDiscordUserRoles()
         {
-            var discordUserRoles = new Dictionary<string, List<SubscriberRole>>();
+            var discordUserRoles = new List<DiscordMember>();
 
             IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
             var guildUsers = users as IGuildUser[] ?? users.ToArray();
@@ -72,16 +97,46 @@ namespace DiscordRoleComparer
             foreach (var guildUser in guildUsers)
             {
                 string username = $"{guildUser.Username}#{guildUser.Discriminator}";
-                var subscriberRoles = new List<SubscriberRole>();
+                var subscriberRoles = new List<string>();
                 foreach (ulong roleID in guildUser.RoleIds)
                 {
                     string roleName = socketGuild.GetRole(roleID).ToString();
-                    SubscriberRole? subscriberRole = SubscriberRoleHelperFunctions.ParseSubscriberRole(roleName);
-                    if (subscriberRole != null)
+                    if (!string.IsNullOrWhiteSpace(roleName))
                     {
-                        subscriberRoles.Add(subscriberRole.GetValueOrDefault());
+                        subscriberRoles.Add(roleName);
                     }
                 }
+
+                if (subscriberRoles.Any())
+                {
+                    discordUserRoles.Add(new DiscordMember(username, subscriberRoles));
+                }
+            }
+
+            return discordUserRoles;
+        }
+
+        /*
+        private async Task<Dictionary<string, List<string>>> AsyncPullDiscordUserRoles()
+        {
+            var discordUserRoles = new Dictionary<string, List<string>>();
+
+            IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
+            var guildUsers = users as IGuildUser[] ?? users.ToArray();
+
+            foreach (var guildUser in guildUsers)
+            {
+                string username = $"{guildUser.Username}#{guildUser.Discriminator}";
+                var subscriberRoles = new List<string>();
+                foreach (ulong roleID in guildUser.RoleIds)
+                {
+                    string roleName = socketGuild.GetRole(roleID).ToString();
+                    if (!string.IsNullOrWhiteSpace(roleName))
+                    {
+                        subscriberRoles.Add(roleName);
+                    }
+                }
+
                 if (subscriberRoles.Any())
                 {
                     discordUserRoles.Add(username, subscriberRoles);
@@ -90,5 +145,6 @@ namespace DiscordRoleComparer
 
             return discordUserRoles;
         }
+        */
     }
 }
