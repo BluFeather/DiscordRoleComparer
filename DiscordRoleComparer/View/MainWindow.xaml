@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordRoleComparer"
         mc:Ignorable="d"
-        Title="Discord Role Comparer" Height="400" Width="800">
+        Title="Discord Role Comparer" Height="400" Width="850">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">

@@ -5,7 +5,121 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordRoleComparer"
         mc:Ignorable="d"
-        Title="RoleManagementWindow" Height="450" Width="800">
-    <Grid>
+        Title="RoleManagementWindow" Height="450" Width="800"
+        SizeToContent="Width">
+    <Grid Margin="10">
+        <ListBox>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Discord Role" Width="175" TextAlignment="Center"/>
+                    <TextBlock Text="Rule" Width="175" TextAlignment="Center"/>
+                    <TextBlock Text="Value" Width="175" TextAlignment="Center"/>
+                </StackPanel>
+            </ListBoxItem>
+            
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Equus Minor"/>
+                        <ComboBoxItem Content="Equus Minor (Lifetime)"/>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Tier ="/>
+                        <ComboBoxItem Content="Lifetime Amount >="/>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Equus Minor (Early Access)"/>
+                        <ComboBoxItem Content="Equus Magnus"/>
+                    </ComboBox>
+                    <Button Content="Delete Rule"/>
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox SelectedIndex="1" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Equus Minor"/>
+                        <ComboBoxItem Content="Equus Minor (Lifetime)"/>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="1" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Tier ="/>
+                        <ComboBoxItem Content="Lifetime Amount >="/>
+                    </ComboBox>
+                    <TextBox Text="100" VerticalAlignment="Center" Width="175"/>
+                    <Button Content="Delete Rule"/>
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox SelectedIndex="1" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Equus Minor"/>
+                        <ComboBoxItem Content="Equus Magnus"/>
+                        <ComboBoxItem Content="Equus Minimi"/>
+                        <ComboBoxItem Content="Equus Maximus"/>
+                        <ComboBoxItem Content="Equus Minor (Lifetime)"/>
+                        <ComboBoxItem Content="Equus Magnus (Lifetime)"/>
+                        <ComboBoxItem Content="Equus Minimi (Lifetime)"/>
+                        <ComboBoxItem Content="Equus Maximus (Lifetime)"/>
+                        <ComboBoxItem Content="2D Artist"/>
+                        <ComboBoxItem Content="VR User"/>
+                        <ComboBoxItem Content="Programmer"/>
+                        <ComboBoxItem Content="Writer"/>
+                        <ComboBoxItem Content="Reviewer"/>
+                        <ComboBoxItem Content="3D Artist"/>
+                        <ComboBoxItem Content="Patreon"/>
+                        <ComboBoxItem Content="Equus Honoratus"/>
+                        <ComboBoxItem Content="Praetorian"/>
+                        <ComboBoxItem Content="Reacts"/>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Tier ="/>
+                        <ComboBoxItem Content="Lifetime Amount >="/>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="Equus Magnus"/>
+                        <ComboBoxItem Content="Equus Minor"/>
+                        <ComboBoxItem Content="Equus Minor (Lifetime)"/>
+                    </ComboBox>
+                    <Button Content="Delete Rule"/>
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="(Select Discord Role)"/>
+                        <ComboBoxItem Content="Equus Minor"/>
+                        <ComboBoxItem Content="Equus Magnus"/>
+                        <ComboBoxItem Content="Equus Minimi"/>
+                        <ComboBoxItem Content="Equus Maximus"/>
+                        <ComboBoxItem Content="Equus Minor (Lifetime)"/>
+                        <ComboBoxItem Content="Equus Magnus (Lifetime)"/>
+                        <ComboBoxItem Content="Equus Minimi (Lifetime)"/>
+                        <ComboBoxItem Content="Equus Maximus (Lifetime)"/>
+                        <ComboBoxItem Content="2D Artist"/>
+                        <ComboBoxItem Content="VR User"/>
+                        <ComboBoxItem Content="Programmer"/>
+                        <ComboBoxItem Content="Writer"/>
+                        <ComboBoxItem Content="Reviewer"/>
+                        <ComboBoxItem Content="3D Artist"/>
+                        <ComboBoxItem Content="Patreon"/>
+                        <ComboBoxItem Content="Equus Honoratus"/>
+                        <ComboBoxItem Content="Praetorian"/>
+                        <ComboBoxItem Content="Reacts"/>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0" VerticalAlignment="Center" Width="175">
+                        <ComboBoxItem Content="(Select Rule)"/>
+                        <ComboBoxItem Content="Lifetime Amount >="/>
+                    </ComboBox>
+                    <TextBox Text="" VerticalAlignment="Center" Width="175"/>
+                    <Button Content="Delete Rule"/>
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <Button Content="New Rule"/>
+            </ListBoxItem>
+        </ListBox>
     </Grid>
 </Window>

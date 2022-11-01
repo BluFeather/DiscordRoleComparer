@@ -18,6 +18,10 @@ namespace DiscordRoleComparer
                 {
                     string[] columns = parser.ReadFields();
 
+                    if (columns.Length != 27)
+                    {
+                        throw new FileFormatException($"\"{csvFile.Name}\" does not contain the expected number of columns and could not be parsed! \nPlease ensure the provided file is correct and is coming from Patreon.\nIf the file is correct, please let the developer know. Patreon may have changed the structure of their CSV files which means this program is out of date.");
+                    }
                     string discordHandle = columns[3];
                     bool activePatron = columns[4] == "Active patron";
                     string subscriberRole = columns[9];

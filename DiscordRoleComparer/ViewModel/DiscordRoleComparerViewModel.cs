@@ -120,10 +120,7 @@ namespace DiscordRoleComparer
             }
             catch (Exception exception)
             {
-                LogMessage($"\"{csvFile.Name}\" could not be parsed!");
-                LogMessage($"Is {csvFile.Name} the correct file?");
-                LogMessage("");
-                LogMessage($"Exception Message: {exception.Message}");
+                LogMessage(exception.Message);
                 return;
             }
 
