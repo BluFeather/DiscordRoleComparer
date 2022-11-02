@@ -29,8 +29,9 @@ namespace DiscordRoleComparer
         #region Manage Roles
         public void ManageRoles_Clicked()
         {
-            RoleManagementWindow roleManagementWindow = new RoleManagementWindow();
+            RoleManagementWindow roleManagementWindow = new RoleManagementWindow(mainWindow);
             roleManagementWindow.Show();
+            mainWindow.IsEnabled = false;
         }
         #endregion
 
@@ -72,6 +73,7 @@ namespace DiscordRoleComparer
             {
                 LogMessage($"Role: {role}");
             }
+            RoleManagement.DiscordRoles = DiscordMember.UniqueRoles;
             UpdateButtonEnabledStates();
         }
 
@@ -130,6 +132,7 @@ namespace DiscordRoleComparer
             {
                 LogMessage($"{subscriber.DiscordHandle}  |  {subscriber.ActivePatron}  |  {subscriber.Tier}  |  {subscriber.LifetimeAmount}");
             }
+            RoleManagement.PatreonTiers = PatreonSubscriber.UniqueTiers;
         }
 
         protected FileInfo GetCsvFromUser()
@@ -151,117 +154,7 @@ namespace DiscordRoleComparer
         public void FindRoleMismatches_Clicked()
         {
             var comparer = new RoleComparer(PatreonSubscriberRoles, DiscordUserRoles);
-            /*
-            try
-            {
-                ClearLogMessages();
-                LogMessage($"Number of Patreon Subscribers: {PatreonSubscriberRoles.Count}");
-                LogMessage($"Number of Discord Roles Assigned: {DiscordSubscriberRoles.Count}");
-                LogMessage("");
-
-                var unsubscribedUsers = FindDiscordUsersWithRoleButNotSubscribed();
-                foreach (var user in unsubscribedUsers)
-                {
-                    LogMessage($"{user.Key} is not subscribed! (Expected: NONE  |  Actual: {string.Join(", ", user.Value)})");
-                    DiscordSubscriberRoles.Remove(user.Key);
-                }
-
-                var multipleSubscriberRoles = FindDiscordUsersWithMultipleSubscriberRoles();
-                foreach (var subscriber in multipleSubscriberRoles)
-                {
-                    LogMessage($"{subscriber.Key} has more than one Subscriber Role! (Expected: {PatreonSubscriberRoles[subscriber.Key]}  |  Actual: {string.Join(", ", subscriber.Value)})");
-                }
-
-                var incorrectSubscriberRole = FindDiscordUsersWithIncorrectSubscriberRole();
-                foreach (var subscriber in incorrectSubscriberRole)
-                {
-                    LogMessage($"{subscriber.Key} has the incorrect Subscriber Role! (Expected: {PatreonSubscriberRoles[subscriber.Key]}  |  Actual: {string.Join(", ", subscriber.Value)})");
-                }
-
-                if (GetNumberOfOutputMessages() == 3)
-                {
-                    LogMessage("No Discord Role Issues Found.");
-                }
-            }
-            catch (Exception exception)
-            {
-                LogMessage("An Exception was encountered within FindRoleMismatches_Clicked()!");
-                LogMessage($"Exception Message: {exception.Message}");
-            }
-            */
         }
-        /*
-        private Dictionary<string, List<SubscriberRole>> FindDiscordUsersWithRoleButNotSubscribed()
-        {
-            var result = new Dictionary<string, List<SubscriberRole>>();
-            foreach (var discordUser in DiscordSubscriberRoles)
-            {
-                try
-                {
-                    if (!PatreonSubscriberRoles.ContainsKey(discordUser.Key))
-                    {
-                        result.Add(discordUser.Key, discordUser.Value);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    LogMessage($"An exception was thrown when comparing {discordUser.Key}!");
-                    LogMessage($"Exception Message: {exception.Message}");
-                }
-            }
-            return result;
-        }
-
-        private Dictionary<string, List<SubscriberRole>> FindDiscordUsersWithMultipleSubscriberRoles()
-        {
-            var result = new Dictionary<string, List<SubscriberRole>>();
-            foreach (var discordUser in DiscordSubscriberRoles)
-            {
-                try
-                {
-                    string discordUsername = discordUser.Key;
-                    List<SubscriberRole> subscriberRoles = discordUser.Value;
-                    if (subscriberRoles.Count > 1)
-                    {
-                        result.Add(discordUsername, subscriberRoles);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    LogMessage($"An exception was thrown when comparing {discordUser.Key}!");
-                    LogMessage($"Exception Message: {exception.Message}");
-                }
-            }
-            return result;
-        }
-
-        private Dictionary<string, List<SubscriberRole>> FindDiscordUsersWithIncorrectSubscriberRole()
-        {
-            var result = new Dictionary<string, List<SubscriberRole>>();
-            foreach (var discordUser in DiscordSubscriberRoles)
-            {
-                try
-                {
-                    string discordUsername = discordUser.Key;
-                    List<SubscriberRole> subscriberRoles = discordUser.Value;
-                    if (subscriberRoles.Count == 1 && PatreonSubscriberRoles.ContainsKey(discordUsername))
-                    {
-                        SubscriberRole? expectedRole = PatreonSubscriberRoles[discordUsername];
-                        if (subscriberRoles[0] != expectedRole.GetValueOrDefault())
-                        {
-                            result.Add(discordUsername, subscriberRoles);
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    LogMessage($"An exception was thrown when comparing {discordUser.Key}!");
-                    LogMessage($"Exception Message: {exception.Message}");
-                }
-            }
-            return result;
-        }
-        */
         #endregion
 
         #region Output Logging

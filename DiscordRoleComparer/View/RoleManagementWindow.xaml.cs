@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,20 @@ namespace DiscordRoleComparer
     /// </summary>
     public partial class RoleManagementWindow : Window
     {
-        public RoleManagementWindow()
+        public RoleManagementWindow(MainWindow mainWindow)
         {
             InitializeComponent();
+            DataContext = new RuleDefinitionsViewModel(this, OnWindowClosing);
+            this.mainWindow = mainWindow;
         }
+
+        private MainWindow mainWindow;
+
+        private void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            mainWindow.IsEnabled = true;
+        }
+
+        protected IRuleDefinitionsViewModelInterface ViewModel { get { return DataContext as IRuleDefinitionsViewModelInterface;} }
     }
 }
