@@ -47,6 +47,20 @@ namespace DiscordRoleComparer
             }
         }
 
+        private HashSet<string> _ruleTypes = new HashSet<string>()
+        {
+            "(Select Conditional)",
+            "If Tier Is",
+            "If Lifetime Donation Is Or Higher"
+        };
+        public HashSet<string> RuleTypes
+        {
+            get
+            {
+                return _ruleTypes;
+            }
+        }
+
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
 

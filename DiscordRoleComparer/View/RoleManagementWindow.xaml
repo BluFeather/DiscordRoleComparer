@@ -5,21 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordRoleComparer"
         mc:Ignorable="d"
-        Title="RoleManagementWindow" Height="450" Width="800"
-        SizeToContent="Width">
-    <Grid Margin="10">
-        <ListBox>
+        Title="RoleManagementWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Margin="6">
+            <TextBlock Text="Apply Role" TextAlignment="Center"
+                       Width="200" Margin="0, 0, 5, 0"/>
+            <TextBlock Text="If Condition Is True" TextAlignment="Center"
+                       Width="455"/>
+        </StackPanel>
+        
+        <ListBox Grid.Row="1" x:Name="RuleListBox">
             <ListBoxItem>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox ItemsSource="{Binding DiscordRoles}" SelectedIndex="0"
-                              Width="150"/>
+                              Width="200"  Margin="0, 0, 5, 0"/>
+                    <ComboBox ItemsSource="{Binding RuleTypes}" SelectedIndex="0"
+                              Width="250"  Margin="0, 0, 5, 0"/>
                     <ComboBox ItemsSource="{Binding PatreonTiers}" SelectedIndex="0"
-                              Width="150"/>
+                              Width="200"  Margin="0, 0, 5, 0" Grid.Column="1"/>
+                    <Button Content="Delete Rule"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem>
-                <Button Content="New Rule"/>
-            </ListBoxItem>
         </ListBox>
+
+        <Button Content="New Rule" Grid.Row="2"
+                Width="150" Height="21.96" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6"/>
     </Grid>
 </Window>
