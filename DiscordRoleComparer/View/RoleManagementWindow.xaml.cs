@@ -24,7 +24,7 @@ namespace DiscordRoleComparer
             InitializeComponent();
             DataContext = new RuleDefinitionsViewModel(this, OnWindowClosing);
             this.mainWindow = mainWindow;
-            RulesList.Items.Add(new RoleRuleUiElement());
+            RulesList.Items.Add(new RoleRuleUiElement().UiElement);
         }
 
         private MainWindow mainWindow;

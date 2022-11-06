@@ -6,27 +6,29 @@ using System.Windows.Controls;
 
 namespace DiscordRoleComparer
 {
-    public class RoleRuleUiElement : StackPanel, INotifyPropertyChanged
+    public class RoleRuleUiElement : RoleRule, INotifyPropertyChanged
     {
         public RoleRuleUiElement()
         {
-            Orientation = Orientation.Horizontal;
+            UiElement = new StackPanel() { Orientation = Orientation.Horizontal };
 
             RoleRulesComboBox = new ComboBox() { ItemsSource = DiscordMember.UniqueRoles, SelectedIndex = 0 };
-            Children.Add(RoleRulesComboBox);
+            UiElement.Children.Add(RoleRulesComboBox);
 
             RulesComboBox = new ComboBox() { ItemsSource = Enum.GetValues(typeof(Rules)), SelectedIndex = 0 };
-            Children.Add(RulesComboBox);
+            UiElement.Children.Add(RulesComboBox);
 
             TiersComboBox = new ComboBox() { ItemsSource = PatreonSubscriber.UniqueTiers, SelectedIndex = 0 };
-            Children.Add(TiersComboBox);
+            UiElement.Children.Add(TiersComboBox);
 
             DeleteRuleButton = new Button() { Content = "Delete Rule" };
             DeleteRuleButton.Click += OnDeleteRuleButtonClicked;
-            Children.Add(DeleteRuleButton);
+            UiElement.Children.Add(DeleteRuleButton);
         }
 
         #region UI Elements
+        public StackPanel UiElement { get; }
+
         ComboBox RoleRulesComboBox;
 
         ComboBox RulesComboBox;
