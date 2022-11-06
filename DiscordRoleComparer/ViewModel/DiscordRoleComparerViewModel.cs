@@ -23,7 +23,7 @@ namespace DiscordRoleComparer
         #region Data Sets
         List<PatreonSubscriber> PatreonSubscriberRoles = new List<PatreonSubscriber>();
 
-        List<DiscordMember> DiscordUserRoles = new List<DiscordMember>();
+        List<DiscordMember> DiscordMembers = new List<DiscordMember>();
         #endregion
 
         #region Manage Roles
@@ -51,22 +51,12 @@ namespace DiscordRoleComparer
                 return;
             }
             PullDiscordRolesButtonEnabled = false;
-            discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordRolesPulled);
+            discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordMembersPulled, OnDiscordRolesPulled);
         }
 
-        private void OnDiscordRolesPulled(object sender, List<DiscordMember> discordUserRoles)
+        private void OnDiscordRolesPulled(object sender, HashSet<string> discordServerRoles)
         {
-            DisableDiscordBotLog();
-            DiscordUserRoles = discordUserRoles;
-            LogMessage($"Discord User Roles Retrieved.");
-            LogMessage("");
-
-            foreach (var discordUser in discordUserRoles)
-            {
-                LogMessage($"{discordUser.Handle} is {string.Join(", ", discordUser.Roles)}");
-            }
-            PullDiscordRolesButtonEnabled = true;
-
+            DiscordMember.UniqueRoles = discordServerRoles;
             LogMessage("");
             LogMessage($"{DiscordMember.UniqueRoles.Count} Unique Roles Found.");
             foreach (var role in DiscordMember.UniqueRoles)
@@ -74,6 +64,20 @@ namespace DiscordRoleComparer
                 LogMessage($"Role: {role}");
             }
             RoleManagement.DiscordRoles = DiscordMember.UniqueRoles;
+        }
+
+        private void OnDiscordMembersPulled(object sender, List<DiscordMember> discordMembersList)
+        {
+            DisableDiscordBotLog();
+            DiscordMembers = discordMembersList;
+            LogMessage($"Discord User Roles Retrieved.");
+            LogMessage("");
+
+            foreach (var discordMember in discordMembersList)
+            {
+                LogMessage($"{discordMember.Handle} is {string.Join(", ", discordMember.Roles)}");
+            }
+            PullDiscordRolesButtonEnabled = true;
             UpdateButtonEnabledStates();
         }
 
@@ -153,7 +157,7 @@ namespace DiscordRoleComparer
         #region Find Role Mismatches
         public void FindRoleMismatches_Clicked()
         {
-            var comparer = new RoleComparer(PatreonSubscriberRoles, DiscordUserRoles);
+            var comparer = new RoleComparer(PatreonSubscriberRoles, DiscordMembers);
         }
         #endregion
 
@@ -242,7 +246,7 @@ namespace DiscordRoleComparer
 
         private void UpdateButtonEnabledStates()
         {
-            FindRoleMismatchesButtonEnabled = PatreonSubscriberRoles.Count > 0 && DiscordUserRoles.Count > 0;
+            FindRoleMismatchesButtonEnabled = PatreonSubscriberRoles.Count > 0 && DiscordMembers.Count > 0;
         }
         #endregion
 
