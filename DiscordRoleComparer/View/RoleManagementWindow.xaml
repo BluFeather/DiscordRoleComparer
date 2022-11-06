@@ -19,21 +19,9 @@
             <TextBlock Text="If Condition Is True" TextAlignment="Center"
                        Width="455"/>
         </StackPanel>
-        
-        <ListBox Grid.Row="1" x:Name="RuleListBox">
-            <ListBoxItem>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox ItemsSource="{Binding DiscordRoles}" SelectedIndex="0"
-                              Width="200"  Margin="0, 0, 5, 0"/>
-                    <ComboBox ItemsSource="{Binding RuleTypes}" SelectedIndex="0"
-                              Width="250"  Margin="0, 0, 5, 0"/>
-                    <ComboBox ItemsSource="{Binding PatreonTiers}" SelectedIndex="0"
-                              Width="200"  Margin="0, 0, 5, 0" Grid.Column="1"/>
-                    <Button Content="Delete Rule"/>
-                </StackPanel>
-            </ListBoxItem>
-        </ListBox>
 
+        <ListBox x:Name="RulesList"/>
+        
         <Button Content="New Rule" Grid.Row="2"
                 Width="150" Height="21.96" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6"/>
     </Grid>

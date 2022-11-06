@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace DiscordRoleComparer
 {
@@ -11,6 +12,7 @@ namespace DiscordRoleComparer
         {
             this.roleManagementWindow = roleManagementWindow;
             roleManagementWindow.Closing += windowClosingCallback;
+            roleManagementWindow.Loaded += OnLoaded;
         }
 
         private RoleManagementWindow roleManagementWindow;
@@ -53,12 +55,20 @@ namespace DiscordRoleComparer
             "If Tier Is",
             "If Lifetime Donation Is Or Higher"
         };
+
         public HashSet<string> RuleTypes
         {
             get
             {
                 return _ruleTypes;
             }
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            
+            DiscordRoles = DiscordMember.UniqueRoles;
+            PatreonTiers = PatreonSubscriber.UniqueTiers;
         }
 
         #region INotifyPropertyChanged Implementation

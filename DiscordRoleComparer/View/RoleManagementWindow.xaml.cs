@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,7 @@ namespace DiscordRoleComparer
             InitializeComponent();
             DataContext = new RuleDefinitionsViewModel(this, OnWindowClosing);
             this.mainWindow = mainWindow;
+            RulesList.Items.Add(new RoleRuleUiElement());
         }
 
         private MainWindow mainWindow;
