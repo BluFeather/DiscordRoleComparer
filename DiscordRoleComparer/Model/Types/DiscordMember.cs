@@ -14,6 +14,6 @@ namespace DiscordRoleComparer
 
         public List<string> Roles = null;
 
-        public static HashSet<string> UniqueRoles = new HashSet<string>();
+        public static HashSet<string> UniqueRoles { get; set; } = new HashSet<string>();
     }
 }

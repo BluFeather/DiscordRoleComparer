@@ -7,10 +7,10 @@
     */
     public class RoleRule
     {
-        public string Role;
+        public string SelectedRole;
 
         public Rules? SelectedRule;
 
-        public string Value;
+        public string SelectedTier;
     }
 }

@@ -11,7 +11,7 @@ namespace DiscordRoleComparer
             Tier = tier;
             LifetimeAmount = lifetimeAmount;
 
-            _uniqueTiers.Add(tier);
+            UniqueTiers.Add(tier);
         }
 
         public string DiscordHandle { get; set; } = "";
@@ -22,8 +22,6 @@ namespace DiscordRoleComparer
 
         public double LifetimeAmount { get; set; } = 0;
 
-        private static HashSet<string> _uniqueTiers = new HashSet<string>();
-
-        public static HashSet<string> UniqueTiers { get { return _uniqueTiers; } }
+        public static HashSet<string> UniqueTiers { get; set; } = new HashSet<string>();
     }
 }
