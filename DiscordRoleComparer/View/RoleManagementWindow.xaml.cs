@@ -24,7 +24,7 @@ namespace DiscordRoleComparer
             InitializeComponent();
             DataContext = new RuleDefinitionsViewModel(this, OnWindowClosing);
             this.mainWindow = mainWindow;
-            RulesList.Items.Add(new RoleRuleUiElement().UiElement);
+            RulesList.Items.Add(new RoleRuleUiElement("Equus Minor", Rules.Patreon_Tier_Is, "Equus Minor (Early Access)").UiElement);
         }
 
         private MainWindow mainWindow;

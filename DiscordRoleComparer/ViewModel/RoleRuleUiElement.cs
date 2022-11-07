@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,20 +30,16 @@ namespace DiscordRoleComparer
             UiElement.Children.Add(DeleteRuleButton);
         }
 
-        private void RoleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        public RoleRuleUiElement(RoleRule roleRule) : this()
         {
-            SelectedRole = (sender as ComboBox)?.SelectedItem.ToString();
+            SetRoleFromString(roleRule.SelectedRole);
+            SetRuleFromString(roleRule.SelectedRule);
+            SetTierFromString(roleRule.SelectedTier);
         }
 
-        private void RuleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        public RoleRuleUiElement(string roleName, Rules? rule, string tierName) : this(new RoleRule(roleName, rule, tierName))
         {
-            string ruleSelection = (sender as ComboBox)?.SelectedItem.ToString();
-            Enum.TryParse(ruleSelection, out Rules SelectedRule);
-        }
 
-        private void TiersSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectedTier = (sender as ComboBox)?.SelectedItem.ToString();
         }
 
         #region Properties
@@ -52,7 +47,6 @@ namespace DiscordRoleComparer
         {
             get
             {
-                
                 if (PatreonSubscriber.UniqueTiers.Count > 0)
                 {
                     var result = new HashSet<string>() { "(Select Patreon Tier)" };
@@ -70,7 +64,6 @@ namespace DiscordRoleComparer
         {
             get
             {
-
                 if (DiscordMember.UniqueRoles.Count > 0)
                 {
                     var result = new HashSet<string>() { "(Select Discord Role)" };
@@ -85,6 +78,36 @@ namespace DiscordRoleComparer
         }
         #endregion
 
+        private void SetRoleFromString(string roleName)
+        {
+            if (RolesDropdownOptions.Contains(roleName))
+            {
+                RolesComboBox.SelectedItem = roleName;
+                return;
+            }
+            RolesComboBox.SelectedIndex = 0;
+        }
+
+        private void SetRuleFromString(Rules? ruleName)
+        {
+            if (ruleName != null && RulesComboBox.Items.Contains(ruleName.ToString()))
+            {
+                RolesComboBox.SelectedItem = ruleName;
+                return;
+            }
+            RulesComboBox.SelectedIndex = 0;
+        }
+
+        private void SetTierFromString(string tierName)
+        {
+            if (TiersDropdownOptions.Contains(tierName))
+            {
+                TiersComboBox.SelectedItem = tierName;
+                return;
+            }
+            RulesComboBox.SelectedIndex = 0;
+        }
+
         #region UI Elements
         public StackPanel UiElement { get; }
 
@@ -97,8 +120,24 @@ namespace DiscordRoleComparer
         Button DeleteRuleButton;
         #endregion
 
-        #region Events
+        #region UI Element Events
         public EventHandler DeleteRuleClicked;
+
+        private void RoleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedRole = (sender as ComboBox)?.SelectedItem.ToString();
+        }
+
+        private void RuleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string ruleSelection = (sender as ComboBox)?.SelectedItem.ToString();
+            Enum.TryParse(ruleSelection, out Rules SelectedRule);
+        }
+
+        private void TiersSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedTier = (sender as ComboBox)?.SelectedItem.ToString();
+        }
 
         private void OnDeleteRuleButtonClicked(object sender, RoutedEventArgs e)
         {

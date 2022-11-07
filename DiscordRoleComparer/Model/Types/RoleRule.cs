@@ -7,6 +7,18 @@
     */
     public class RoleRule
     {
+        public RoleRule()
+        {
+
+        }
+
+        public RoleRule(string selectedRole, Rules? selectedRule, string selectedTier)
+        {
+            SelectedRole = selectedRole;
+            SelectedRule = selectedRule;
+            SelectedTier = selectedTier;
+        }
+
         public string SelectedRole;
 
         public Rules? SelectedRule;
