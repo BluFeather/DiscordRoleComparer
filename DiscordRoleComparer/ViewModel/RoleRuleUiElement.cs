@@ -9,6 +9,7 @@ namespace DiscordRoleComparer
 {
     public class RoleRuleUiElement : RoleRule, INotifyPropertyChanged
     {
+        #region Constructors
         public RoleRuleUiElement()
         {
             UiElement = new StackPanel() { Orientation = Orientation.Horizontal };
@@ -41,6 +42,7 @@ namespace DiscordRoleComparer
         {
 
         }
+        #endregion
 
         #region Properties
         private HashSet<string> TiersDropdownOptions
@@ -78,6 +80,7 @@ namespace DiscordRoleComparer
         }
         #endregion
 
+        #region UI Element Functions
         private void SetRoleFromString(string roleName)
         {
             if (RolesDropdownOptions.Contains(roleName))
@@ -107,6 +110,7 @@ namespace DiscordRoleComparer
             }
             RulesComboBox.SelectedIndex = 0;
         }
+        #endregion
 
         #region UI Elements
         public StackPanel UiElement { get; }
