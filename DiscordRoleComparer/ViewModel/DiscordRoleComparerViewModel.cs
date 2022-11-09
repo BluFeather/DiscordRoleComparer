@@ -23,7 +23,7 @@ namespace DiscordRoleComparer
         #region Data Sets
         List<PatreonSubscriber> PatreonSubscriberRoles = new List<PatreonSubscriber>();
 
-        List<DiscordMember> DiscordMembers = new List<DiscordMember>();
+        List<OLDDiscordMember> DiscordMembers = new List<OLDDiscordMember>();
         #endregion
 
         #region Manage Roles
@@ -56,17 +56,17 @@ namespace DiscordRoleComparer
 
         private void OnDiscordRolesPulled(object sender, HashSet<string> discordServerRoles)
         {
-            DiscordMember.UniqueRoles = discordServerRoles;
+            OLDDiscordMember.UniqueRoles = discordServerRoles;
             LogMessage("");
-            LogMessage($"{DiscordMember.UniqueRoles.Count} Unique Roles Found.");
-            foreach (var role in DiscordMember.UniqueRoles)
+            LogMessage($"{OLDDiscordMember.UniqueRoles.Count} Unique Roles Found.");
+            foreach (var role in OLDDiscordMember.UniqueRoles)
             {
                 LogMessage($"Role: {role}");
             }
-            RoleManagement.DiscordRoles = DiscordMember.UniqueRoles;
+            RoleManagement.DiscordRoles = OLDDiscordMember.UniqueRoles;
         }
 
-        private void OnDiscordMembersPulled(object sender, List<DiscordMember> discordMembersList)
+        private void OnDiscordMembersPulled(object sender, List<OLDDiscordMember> discordMembersList)
         {
             DisableDiscordBotLog();
             DiscordMembers = discordMembersList;

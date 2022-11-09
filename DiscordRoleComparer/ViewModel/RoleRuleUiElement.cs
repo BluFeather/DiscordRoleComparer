@@ -66,10 +66,10 @@ namespace DiscordRoleComparer
         {
             get
             {
-                if (DiscordMember.UniqueRoles.Count > 0)
+                if (OLDDiscordMember.UniqueRoles.Count > 0)
                 {
                     var result = new HashSet<string>() { "(Select Discord Role)" };
-                    result.UnionWith(DiscordMember.UniqueRoles);
+                    result.UnionWith(OLDDiscordMember.UniqueRoles);
                     return result;
                 }
                 else

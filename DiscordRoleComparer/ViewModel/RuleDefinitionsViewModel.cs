@@ -66,7 +66,7 @@ namespace DiscordRoleComparer
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             
-            DiscordRoles = DiscordMember.UniqueRoles;
+            DiscordRoles = OLDDiscordMember.UniqueRoles;
             PatreonTiers = PatreonSubscriber.UniqueTiers;
         }
 

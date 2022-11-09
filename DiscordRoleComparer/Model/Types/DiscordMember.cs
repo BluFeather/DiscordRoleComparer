@@ -4,16 +4,14 @@ namespace DiscordRoleComparer
 {
     public class DiscordMember
     {
-        public DiscordMember(string handle, List<string> roles)
+        public DiscordMember(ulong userID, HashSet<ulong> roleIDs)
         {
-            Handle = handle;
-            Roles = roles;
+            this.userID = userID;
+            this.roleIDs = roleIDs;
         }
 
-        public string Handle = null;
+        public ulong userID;
 
-        public List<string> Roles = null;
-
-        public static HashSet<string> UniqueRoles { get; set; } = new HashSet<string>();
+        public HashSet<ulong> roleIDs;
     }
 }

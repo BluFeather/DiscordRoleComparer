@@ -26,13 +26,13 @@ namespace DiscordRoleComparer
 
         private SocketGuild socketGuild;
 
-        private EventHandler<List<DiscordMember>> DiscordUsersPulledCallback;
+        private EventHandler<List<OLDDiscordMember>> DiscordUsersPulledCallback;
 
         EventHandler<HashSet<string>> DiscordRolesPulledCallback;
 
         public Func<LogMessage, Task> Log { get; set; }
 
-        public void PullDiscordPatreonRoles(string token, EventHandler<List<DiscordMember>> DiscordUsersPulledCallback, EventHandler<HashSet<string>> DiscordRolesPulledCallback)
+        public void PullDiscordPatreonRoles(string token, EventHandler<List<OLDDiscordMember>> DiscordUsersPulledCallback, EventHandler<HashSet<string>> DiscordRolesPulledCallback)
         {
 #if DEBUG
             AskForAndParseDiscordUserRolesJson(token, DiscordUsersPulledCallback, DiscordRolesPulledCallback);
@@ -43,9 +43,9 @@ namespace DiscordRoleComparer
 #endif
         }
 
-        public void AskForAndParseDiscordUserRolesJson(string token, EventHandler<List<DiscordMember>> DiscordUsersPulledCallback, EventHandler<HashSet<string>> DiscordRolesPulledCallback)
+        public void AskForAndParseDiscordUserRolesJson(string token, EventHandler<List<OLDDiscordMember>> DiscordUsersPulledCallback, EventHandler<HashSet<string>> DiscordRolesPulledCallback)
         {
-            var result = new List<DiscordMember>();
+            var result = new List<OLDDiscordMember>();
             var serverRoles = new HashSet<string>();
             this.DiscordUsersPulledCallback = DiscordUsersPulledCallback;
             this.DiscordRolesPulledCallback = DiscordRolesPulledCallback;
@@ -57,7 +57,7 @@ namespace DiscordRoleComparer
                 Dictionary<string, List<string>> jsonResult = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(jsonString);
                 foreach(var item in jsonResult)
                 {
-                    result.Add(new DiscordMember(item.Key, item.Value));
+                    result.Add(new OLDDiscordMember(item.Key, item.Value));
                     foreach (string role in item.Value)
                     {
                         serverRoles.Add(role);
@@ -111,9 +111,9 @@ namespace DiscordRoleComparer
             return result;
         }
 
-        private async Task<(List<DiscordMember>, HashSet<string>)> AsyncPullDiscordUserRoles()
+        private async Task<(List<OLDDiscordMember>, HashSet<string>)> AsyncPullDiscordUserRoles()
         {
-            var discordUserRoles = new List<DiscordMember>();
+            var discordUserRoles = new List<OLDDiscordMember>();
             
             IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
             var guildUsers = users as IGuildUser[] ?? users.ToArray();
@@ -133,7 +133,7 @@ namespace DiscordRoleComparer
 
                 if (subscriberRoles.Any())
                 {
-                    discordUserRoles.Add(new DiscordMember(username, subscriberRoles));
+                    discordUserRoles.Add(new OLDDiscordMember(username, subscriberRoles));
                 }
             }
 
