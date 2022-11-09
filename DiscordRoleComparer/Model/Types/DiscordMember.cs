@@ -8,19 +8,12 @@ namespace DiscordRoleComparer
         {
             Handle = handle;
             Roles = roles;
-
-            foreach (string role in roles)
-            {
-                _uniqueRoles.Add(role);
-            }
         }
 
         public string Handle = null;
 
         public List<string> Roles = null;
 
-        private static HashSet<string> _uniqueRoles = new HashSet<string>();
-
-        public static HashSet<string> UniqueRoles { get { return _uniqueRoles; } }
+        public static HashSet<string> UniqueRoles { get; set; } = new HashSet<string>();
     }
 }
