@@ -40,6 +40,9 @@ namespace DiscordRoleComparer
 
         public void PullDiscordRoles_Clicked()
         {
+            DiscordFacade facade = new DiscordFacade();
+            facade.Start(mainWindow.TokenTextBox.Text);
+            /*
             ClearLogMessages();
             discordRoleRepository = new DiscordRoleRepository();
             discordRoleRepository.Log += DiscordBotLog;
@@ -52,6 +55,7 @@ namespace DiscordRoleComparer
             }
             PullDiscordRolesButtonEnabled = false;
             discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordMembersPulled, OnDiscordRolesPulled);
+            */
         }
 
         private void OnDiscordRolesPulled(object sender, HashSet<string> discordServerRoles)
