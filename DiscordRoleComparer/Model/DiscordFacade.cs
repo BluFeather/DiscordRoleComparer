@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,36 +10,26 @@ namespace DiscordRoleComparer
     {
         public DiscordFacade()
         {
-            DiscordSocketConfig config = new DiscordSocketConfig()
-            {
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers
-            };
-
-            client = new DiscordSocketClient(config);
+            
         }
-
-        private List<SocketGuild> socketGuilds = new List<SocketGuild>();
 
         private List<GuildData> guildDatas = new List<GuildData>();
 
-        public async void Start(string token)
-        {
-            await MainAsync(token);
-        }
+        public async void Start(string token) => await MainAsync(token);
 
         #region Discord.NET
         private DiscordSocketClient client;
 
         private async Task MainAsync(string token)
         {
+            client = new DiscordSocketClient(new DiscordSocketConfig() { GatewayIntents =  GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers });
             client.GuildAvailable += OnGuildAvailable;
-            client.Log += OnLogOutput;
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
             await Task.Delay(-1);
         }
 
-        private async Task<List<DiscordMember>> PullGuildMembers(SocketGuild socketGuild)
+        private async Task<List<DiscordMember>> AsyncPullGuildMembers(SocketGuild socketGuild)
         {
             IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
             var guildUsers = users as IGuildUser[] ?? users.ToArray();
@@ -66,21 +55,12 @@ namespace DiscordRoleComparer
             }
             return roles;
         }
-        #endregion
-
-        #region Discord.NET Events
-        private Task OnLogOutput(LogMessage logMessage)
-        {
-            return Task.CompletedTask;
-        }
 
         private Task OnGuildAvailable(SocketGuild socketGuild)
         {
-            socketGuilds.Add(socketGuild);
-
             var guildData = new GuildData(
                 socketGuild.Name,
-                PullGuildMembers(socketGuild)?.Result,
+                AsyncPullGuildMembers(socketGuild)?.Result,
                 PullGuildRoles(socketGuild));
 
             guildDatas.Add(guildData);
