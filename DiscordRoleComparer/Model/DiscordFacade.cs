@@ -1,10 +1,8 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DiscordRoleComparer
@@ -23,7 +21,7 @@ namespace DiscordRoleComparer
 
         private List<SocketGuild> socketGuilds = new List<SocketGuild>();
 
-        private Dictionary<ulong, string> guildRoles = new Dictionary<ulong, string>();
+        private List<GuildData> guildDatas = new List<GuildData>();
 
         public async void Start(string token)
         {
@@ -79,18 +77,13 @@ namespace DiscordRoleComparer
         private Task OnGuildAvailable(SocketGuild socketGuild)
         {
             socketGuilds.Add(socketGuild);
-            List<DiscordMember> members = PullGuildMembers(socketGuild)?.Result;
-            Dictionary<ulong, string> guildRoles = PullGuildRoles(socketGuild);
 
-            foreach (DiscordMember user in members)
-            {
-                HashSet<string> friendlyRoleNames = new HashSet<string>();
-                foreach(var role in user.roleIDs)
-                {
-                    friendlyRoleNames.Add(guildRoles[role]);
-                }
-                Debug.WriteLine($"user ID: {user.userID}, username: {user.username}, role IDs: {string.Join(", ", friendlyRoleNames)}");
-            }
+            var guildData = new GuildData(
+                socketGuild.Name,
+                PullGuildMembers(socketGuild)?.Result,
+                PullGuildRoles(socketGuild));
+
+            guildDatas.Add(guildData);
             return Task.CompletedTask;
         }
         #endregion

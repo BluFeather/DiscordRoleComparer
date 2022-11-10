@@ -41,7 +41,7 @@ namespace DiscordRoleComparer
         public void PullDiscordRoles_Clicked()
         {
             DiscordFacade facade = new DiscordFacade();
-            facade.Start(mainWindow.TokenTextBox.Text);
+            facade.Start(mainWindow.TokenTextBox.Text); 
             /*
             ClearLogMessages();
             discordRoleRepository = new DiscordRoleRepository();
