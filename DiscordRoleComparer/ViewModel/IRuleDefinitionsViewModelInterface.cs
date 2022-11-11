@@ -1,4 +1,4 @@
-﻿namespace DiscordRoleComparer
+﻿namespace DiscordRoleComparer.ViewModel.Old
 {
     public interface IRuleDefinitionsViewModelInterface
     {

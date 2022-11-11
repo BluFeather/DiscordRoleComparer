@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
-namespace DiscordRoleComparer
+namespace DiscordRoleComparer.ViewModel.Old
 {
     public class RuleDefinitionsViewModel : IRuleDefinitionsViewModelInterface, INotifyPropertyChanged
     {
@@ -65,7 +65,7 @@ namespace DiscordRoleComparer
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            
+
             DiscordRoles = OLDDiscordMember.UniqueRoles;
             PatreonTiers = PatreonSubscriber.UniqueTiers;
         }

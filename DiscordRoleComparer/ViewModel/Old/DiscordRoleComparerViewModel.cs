@@ -1,4 +1,5 @@
 ﻿using Discord;
+using DiscordRoleComparer.ViewModel.Old;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

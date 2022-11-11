@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using DiscordRoleComparer.ViewModel.Old;
+using System.ComponentModel;
 using System.Windows;
 
 namespace DiscordRoleComparer

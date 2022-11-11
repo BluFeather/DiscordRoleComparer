@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace DiscordRoleComparer
+namespace DiscordRoleComparer.ViewModel.Old
 {
     public class MainWindowViewModel : IDiscordRoleComparerViewModelInterface
     {

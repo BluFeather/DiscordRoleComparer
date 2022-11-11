@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DiscordRoleComparer
+namespace DiscordRoleComparer.ViewModel.Old
 {
     public class RoleRuleUiElement : RoleRule, INotifyPropertyChanged
     {

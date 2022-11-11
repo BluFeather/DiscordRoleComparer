@@ -19,6 +19,11 @@ namespace DiscordRoleComparer
 
         public override string ToString()
         {
+            return Username;
+        }
+
+        public string SummarizeAsString()
+        {
             return $"{Username} (ID: {UserID}) (RoleIDs: {string.Join(", ", RoleIDs)})";
         }
     }
