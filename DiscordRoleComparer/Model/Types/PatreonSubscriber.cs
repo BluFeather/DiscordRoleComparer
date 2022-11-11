@@ -4,19 +4,16 @@ namespace DiscordRoleComparer
 {
     public class PatreonSubscriber
     {
-        public PatreonSubscriber(string discordHandle, bool activePatron, string tier, double lifetimeAmount)
+        public PatreonSubscriber(string discord, string tier, double lifetimeAmount)
         {
-            DiscordHandle = discordHandle;
-            ActivePatron = activePatron;
+            Discord = discord;
             Tier = tier;
             LifetimeAmount = lifetimeAmount;
 
             UniqueTiers.Add(tier);
         }
 
-        public string DiscordHandle { get; set; } = "";
-
-        public bool ActivePatron { get; set; } = false;
+        public string Discord { get; set; } = "";
 
         public string Tier { get; set; } = null;
 

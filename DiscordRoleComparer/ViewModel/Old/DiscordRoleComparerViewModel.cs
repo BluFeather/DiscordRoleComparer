@@ -17,7 +17,7 @@ namespace DiscordRoleComparer
         {
             this.mainWindow = mainWindow;
         }
-        
+
         private MainWindow mainWindow;
 
         #region Data Sets
@@ -139,7 +139,7 @@ namespace DiscordRoleComparer
             LogMessage("");
             foreach (var subscriber in PatreonSubscriberRoles)
             {
-                LogMessage($"{subscriber.DiscordHandle}  |  {subscriber.ActivePatron}  |  {subscriber.Tier}  |  {subscriber.LifetimeAmount}");
+                LogMessage($"{subscriber.Discord}  |  {subscriber.Tier}  |  {subscriber.LifetimeAmount}");
             }
             RoleManagement.PatreonTiers = PatreonSubscriber.UniqueTiers;
         }

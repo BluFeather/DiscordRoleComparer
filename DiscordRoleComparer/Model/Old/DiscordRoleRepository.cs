@@ -55,7 +55,7 @@ namespace DiscordRoleComparer
             {
                 string jsonString = File.ReadAllText(fileDialog.FileName);
                 Dictionary<string, List<string>> jsonResult = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(jsonString);
-                foreach(var item in jsonResult)
+                foreach (var item in jsonResult)
                 {
                     result.Add(new OLDDiscordMember(item.Key, item.Value));
                     foreach (string role in item.Value)
@@ -114,7 +114,7 @@ namespace DiscordRoleComparer
         private async Task<(List<OLDDiscordMember>, HashSet<string>)> AsyncPullDiscordUserRoles()
         {
             var discordUserRoles = new List<OLDDiscordMember>();
-            
+
             IEnumerable<IGuildUser> users = await socketGuild.GetUsersAsync().FlattenAsync();
             var guildUsers = users as IGuildUser[] ?? users.ToArray();
 
