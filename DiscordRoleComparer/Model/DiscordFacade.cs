@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,18 +13,46 @@ namespace DiscordRoleComparer
 
         private List<GuildData> guildDatas = new List<GuildData>();
 
-        public async void Start(string token) => await MainAsync(token);
+        public async Task<List<GuildData>> AsyncPullGuildData(string token)
+        {
+            if (!await ConnectClientAsync(token)) return new List<GuildData>();
+
+            List<GuildData> pulledGuildDatas = new List<GuildData>();
+            foreach (SocketGuild socketGuild in client.Guilds)
+            {
+                string guildName = socketGuild.Name;
+                List<DiscordMember> guildMembers = await AsyncPullGuildMembers(socketGuild);
+                Dictionary<ulong, string> guildRoles = PullGuildRoles(socketGuild);
+
+                pulledGuildDatas.Add(new GuildData(guildName, guildMembers, guildRoles));
+            }
+            return pulledGuildDatas;
+        }
 
         #region Discord.NET
         private DiscordSocketClient client;
 
-        private async Task MainAsync(string token)
+        private async Task<bool> ConnectClientAsync(string token)
         {
+            if (client?.ConnectionState == ConnectionState.Connected) return true;
+
             client = new DiscordSocketClient(new DiscordSocketConfig() { GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers });
-            client.GuildAvailable += OnGuildAvailable;
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
-            await Task.Delay(-1);
+
+            int timeoutMillisecondsDelay = 20000;
+            int millisecondsDelay = 500;
+            int elapsedTime = 0;
+            do
+            {
+                elapsedTime += millisecondsDelay;
+                Debug.WriteLine($"Connection State: {client.ConnectionState} | Elapsed Time: {elapsedTime}");
+                await Task.Delay(millisecondsDelay);
+            }
+            while (elapsedTime <= timeoutMillisecondsDelay && client.ConnectionState != ConnectionState.Connected);
+
+            Debug.WriteLine($"Connection State: {client.ConnectionState}");
+            return elapsedTime <= timeoutMillisecondsDelay;
         }
 
         private async Task<List<DiscordMember>> AsyncPullGuildMembers(SocketGuild socketGuild)
@@ -51,17 +80,6 @@ namespace DiscordRoleComparer
                 roles.Add(socketRole.Id, socketRole.Name);
             }
             return roles;
-        }
-
-        private Task OnGuildAvailable(SocketGuild socketGuild)
-        {
-            var guildData = new GuildData(
-                socketGuild.Name,
-                AsyncPullGuildMembers(socketGuild)?.Result,
-                PullGuildRoles(socketGuild));
-
-            guildDatas.Add(guildData);
-            return Task.CompletedTask;
         }
         #endregion
     }

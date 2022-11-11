@@ -13,12 +13,12 @@ namespace DiscordRoleComparer
             UniqueTiers.Add(tier);
         }
 
-        public string Discord { get; set; } = "";
+        public string Discord { get; } = "";
 
-        public string Tier { get; set; } = null;
+        public string Tier { get; } = null;
 
-        public double LifetimeAmount { get; set; } = 0;
+        public double LifetimeAmount { get; } = 0;
 
-        public static HashSet<string> UniqueTiers { get; set; } = new HashSet<string>();
+        public static HashSet<string> UniqueTiers { get; private set; } = new HashSet<string>();
     }
 }

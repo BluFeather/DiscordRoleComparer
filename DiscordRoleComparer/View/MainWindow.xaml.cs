@@ -7,7 +7,7 @@ namespace DiscordRoleComparer
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new DiscordRoleComparerViewModel(this);
+            DataContext = new MainWindowViewModel(this);
         }
 
         protected IDiscordRoleComparerViewModelInterface ViewModel { get { return DataContext as IDiscordRoleComparerViewModelInterface; } }

@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -40,10 +41,6 @@ namespace DiscordRoleComparer
 
         public void PullDiscordRoles_Clicked()
         {
-            DiscordFacade facade = new DiscordFacade();
-            facade.Start(mainWindow.TokenTextBox.Text);
-
-            /*
             ClearLogMessages();
             discordRoleRepository = new DiscordRoleRepository();
             discordRoleRepository.Log += DiscordBotLog;
@@ -56,7 +53,6 @@ namespace DiscordRoleComparer
             }
             PullDiscordRolesButtonEnabled = false;
             discordRoleRepository.PullDiscordPatreonRoles(token, OnDiscordMembersPulled, OnDiscordRolesPulled);
-            */
         }
 
         private void OnDiscordRolesPulled(object sender, HashSet<string> discordServerRoles)

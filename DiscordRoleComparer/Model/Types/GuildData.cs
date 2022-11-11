@@ -16,5 +16,10 @@ namespace DiscordRoleComparer
         public List<DiscordMember> Members;
 
         public Dictionary<ulong, string> Roles;
+
+        public override string ToString()
+        {
+            return $"Guild Name: {Name} | Member Count: {Members?.Count} | Roles: {string.Join(", ", Roles)}";
+        }
     }
 }
