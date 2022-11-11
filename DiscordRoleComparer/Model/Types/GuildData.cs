@@ -7,13 +7,13 @@ namespace DiscordRoleComparer
         public GuildData(string name, List<DiscordMember> discordMembers, Dictionary<ulong, string> roles)
         {
             Name = name;
-            DiscordMembers = discordMembers;
+            Members = discordMembers;
             Roles = roles;
         }
 
         public string Name;
 
-        public List<DiscordMember> DiscordMembers;
+        public List<DiscordMember> Members;
 
         public Dictionary<ulong, string> Roles;
     }

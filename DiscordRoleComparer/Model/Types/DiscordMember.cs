@@ -16,5 +16,10 @@ namespace DiscordRoleComparer
         public string Username { get; set; }
 
         public HashSet<ulong> RoleIDs { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Username} (ID: {UserID}) (RoleIDs: {string.Join(", ", RoleIDs)})";
+        }
     }
 }
