@@ -41,9 +41,9 @@ namespace DiscordRoleComparer
         #endregion
 
         #region View Input Events
-        public virtual void ParseCsvFile() { }
+        public abstract void ParseCsvFile();
 
-        public virtual void PullDiscordGuilds() { }
+        public abstract void PullDiscordGuilds();
         #endregion
 
         #region INotifyPropertyChanged Implementation
