@@ -41,8 +41,7 @@ namespace DiscordRoleComparer
         public void PullDiscordRoles_Clicked()
         {
             DiscordFacade facade = new DiscordFacade();
-            //facade.Start(mainWindow.TokenTextBox.Text); 
-            facade.OpenJsonFile();
+            facade.Start(mainWindow.TokenTextBox.Text);
 
             /*
             ClearLogMessages();
