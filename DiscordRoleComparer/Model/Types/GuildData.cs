@@ -4,14 +4,17 @@ namespace DiscordRoleComparer
 {
     public class GuildData
     {
-        public GuildData(string name, List<DiscordMember> discordMembers, Dictionary<ulong, string> roles)
+        public GuildData(string name, ulong serverID, List<DiscordMember> discordMembers, Dictionary<ulong, string> roles)
         {
             Name = name;
             Members = discordMembers;
+            ServerID = serverID;
             Roles = roles;
         }
 
         public string Name;
+
+        public ulong ServerID;
 
         public List<DiscordMember> Members;
 
@@ -24,7 +27,7 @@ namespace DiscordRoleComparer
 
         public string SummarizeAsString()
         {
-            return $"Guild Name: {Name} | Member Count: {Members?.Count} | Roles: {string.Join(", ", Roles)}";
+            return $"Guild Name: {Name} | Server ID: {ServerID} | Member Count: {Members?.Count} | Roles: {string.Join(", ", Roles)}";
         }
     }
 }

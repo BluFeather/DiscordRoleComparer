@@ -19,12 +19,9 @@ namespace DiscordRoleComparer
         public override async void PullDiscordGuilds()
         {
 #if DEBUG
-            FileInfo jsonFile = AskForJsonFile();
-            if (jsonFile == null) return;
-
-            string jsonString = File.ReadAllText(jsonFile.FullName);
-            GuildData result = JsonConvert.DeserializeObject<GuildData>(jsonString);
-            GuildDatas = new List<GuildData>() { result };
+            var guildData = LoadGuildDataFromDisk();
+            GuildDatas = new List<GuildData>() { guildData };
+            Debug.WriteLine(guildData.SummarizeAsString());
 #else
             DiscordFacade discordFacade = new DiscordFacade();
             GuildDatas = await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text);
@@ -50,7 +47,7 @@ namespace DiscordRoleComparer
             List<DiscordMemberEdits> discordMemberEdits = CreateDiscordMemberEditsList();
             foreach (var discordMemberEdit in discordMemberEdits)
             {
-                Debug.WriteLine($"{discordMemberEdit.discordMember.SummarizeAsString()} && {discordMemberEdit.PatreonSubscriber.SummarizeAsString()}");
+                Debug.WriteLine($"{discordMemberEdit.DiscordMember.SummarizeAsString()} && {discordMemberEdit.PatreonSubscriber.SummarizeAsString()}");
             }
         }
 #endregion
@@ -79,7 +76,7 @@ namespace DiscordRoleComparer
                     Debug.WriteLine($"{discordMember.Username} was not found in the Patreon Subscribers CSV!");
                     continue;
                 }
-                discordMemberEdits.Add(new DiscordMemberEdits(discordMember, patreonSubscriber));
+                discordMemberEdits.Add(new DiscordMemberEdits(selectedGuildData.ServerID, discordMember, patreonSubscriber));
             }
             return discordMemberEdits;
         }
@@ -103,6 +100,25 @@ namespace DiscordRoleComparer
                 return new FileInfo(openFileDialog.FileName);
             }
             return null;
+        }
+
+        private void GuildDataToJson(GuildData guildData)
+        {
+            string jsonString = JsonConvert.SerializeObject(guildData, Formatting.Indented);
+            var saveFileDialog = new System.Windows.Forms.SaveFileDialog() { Filter = "json | *.json" };
+            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, jsonString);
+            }
+        }
+
+        private GuildData LoadGuildDataFromDisk()
+        {
+            FileInfo jsonFile = AskForJsonFile();
+            if (jsonFile == null) return null;
+
+            string jsonString = File.ReadAllText(jsonFile.FullName);
+            return JsonConvert.DeserializeObject<GuildData>(jsonString);
         }
         #endregion
     }

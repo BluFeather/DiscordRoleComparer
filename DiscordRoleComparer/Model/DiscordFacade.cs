@@ -21,10 +21,11 @@ namespace DiscordRoleComparer
             foreach (SocketGuild socketGuild in client.Guilds)
             {
                 string guildName = socketGuild.Name;
+                ulong guildId = socketGuild.Id;
                 List<DiscordMember> guildMembers = await AsyncPullGuildMembers(socketGuild);
                 Dictionary<ulong, string> guildRoles = PullGuildRoles(socketGuild);
 
-                pulledGuildDatas.Add(new GuildData(guildName, guildMembers, guildRoles));
+                pulledGuildDatas.Add(new GuildData(guildName, guildId, guildMembers, guildRoles));
             }
             return pulledGuildDatas;
         }
