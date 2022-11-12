@@ -29,6 +29,8 @@ namespace DiscordRoleComparer
             return pulledGuildDatas;
         }
 
+
+
         #region Discord.NET
         private DiscordSocketClient client;
 
@@ -80,6 +82,16 @@ namespace DiscordRoleComparer
                 roles.Add(socketRole.Id, socketRole.Name);
             }
             return roles;
+        }
+
+        public async void AsyncRemoveRole(SocketGuild socketGuild, DiscordMember discordMember, ulong roleID)
+        {
+            await socketGuild.GetUser(discordMember.UserID)?.RemoveRoleAsync(roleID);
+        }
+
+        public async void AsyncAddRole(SocketGuild socketGuild, DiscordMember discordMember, ulong roleID)
+        {
+            await socketGuild.GetUser(discordMember.UserID)?.AddRoleAsync(roleID);
         }
         #endregion
     }

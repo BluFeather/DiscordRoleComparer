@@ -48,6 +48,10 @@ namespace DiscordRoleComparer
         public override void CreateDiscordRoleEdits()
         {
             List<DiscordMemberEdits> discordMemberEdits = CreateDiscordMemberEditsList();
+            foreach (var discordMemberEdit in discordMemberEdits)
+            {
+                Debug.WriteLine($"{discordMemberEdit.discordMember.SummarizeAsString()} && {discordMemberEdit.PatreonSubscriber.SummarizeAsString()}");
+            }
         }
 #endregion
 
