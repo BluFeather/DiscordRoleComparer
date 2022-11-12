@@ -18,7 +18,6 @@ namespace DiscordRoleComparer
         #region View Input Events
         public override async void PullDiscordGuilds()
         {
-
 #if DEBUG
             FileInfo jsonFile = AskForJsonFile();
             if (jsonFile == null) return;
@@ -36,7 +35,15 @@ namespace DiscordRoleComparer
         {
             FileInfo csvFile = AskForCsvFile();
             if (csvFile == null) return;
-            PatreonSubscribers = PatreonCsvParser.ParsePatreonCsvFile(csvFile);
+            try
+            {
+                PatreonSubscribers = PatreonCsvParser.ParsePatreonCsvFile(csvFile);
+            }
+            catch (Exception exception)
+            {
+                System.Windows.MessageBox.Show(exception.Message);
+            }
+            
         }
 
         public override void CreateDiscordRoleEdits()
@@ -57,6 +64,12 @@ namespace DiscordRoleComparer
             Dictionary<string, PatreonSubscriber> patreonSubscribersList = new Dictionary<string, PatreonSubscriber>();
             foreach (PatreonSubscriber patreonSubscriber in PatreonSubscribers)
             {
+                if (patreonSubscribersList.ContainsKey(patreonSubscriber.Discord))
+                {
+                    PatreonSubscriber listedPatreonSubscriber = patreonSubscribersList[patreonSubscriber.Discord];
+                    patreonSubscribersList.Remove(patreonSubscriber.Discord);
+                    patreonSubscriber.CombineIfDiscordsMatch(listedPatreonSubscriber);
+                }
                 patreonSubscribersList.Add(patreonSubscriber.Discord, patreonSubscriber);
             }
 
@@ -64,6 +77,11 @@ namespace DiscordRoleComparer
             foreach (DiscordMember discordMember in selectedGuildData.Members)
             {
                 patreonSubscribersList.TryGetValue(discordMember.Username, out PatreonSubscriber patreonSubscriber);
+                if (patreonSubscriber == null)
+                {
+                    Debug.WriteLine($"{discordMember.Username} was not found in the Patreon Subscribers CSV!");
+                    continue;
+                }
                 discordMemberEdits.Add(new DiscordMemberEdits(discordMember, patreonSubscriber));
             }
             return discordMemberEdits;
