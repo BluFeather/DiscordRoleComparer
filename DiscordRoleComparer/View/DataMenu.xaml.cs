@@ -15,5 +15,7 @@ namespace DiscordRoleComparer
         private void ParseCsvFile_Clicked(object sender, RoutedEventArgs e) => ViewModel?.ParseCsvFile();
 
         private void PullDiscordGuilds_Clicked(object sender, RoutedEventArgs e) => ViewModel?.PullDiscordGuilds();
+
+        private void CreateDiscordRoleEdits_Clicked(object sender, RoutedEventArgs e) => ViewModel?.CreateDiscordRoleEdits();
     }
 }

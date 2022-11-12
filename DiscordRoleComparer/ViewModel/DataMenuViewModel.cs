@@ -44,6 +44,8 @@ namespace DiscordRoleComparer
         public abstract void ParseCsvFile();
 
         public abstract void PullDiscordGuilds();
+
+        public abstract void CreateDiscordRoleEdits();
         #endregion
 
         #region INotifyPropertyChanged Implementation

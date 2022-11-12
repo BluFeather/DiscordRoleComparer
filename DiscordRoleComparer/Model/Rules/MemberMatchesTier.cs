@@ -1,4 +1,6 @@
-﻿namespace DiscordRoleComparer
+﻿using System.Collections.Generic;
+
+namespace DiscordRoleComparer
 {
     public class MemberMatchesTier : Rule
     {

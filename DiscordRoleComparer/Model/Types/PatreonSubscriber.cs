@@ -19,6 +19,11 @@ namespace DiscordRoleComparer
 
         public double LifetimeAmount { get; } = 0;
 
+        public string SummarizeAsString()
+        {
+            return $"{Discord} has tier {Tier} and has donated {LifetimeAmount}.";
+        }
+
         public static HashSet<string> UniqueTiers { get; private set; } = new HashSet<string>();
     }
 }

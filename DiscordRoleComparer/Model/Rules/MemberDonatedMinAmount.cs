@@ -7,6 +7,6 @@
             return discordMemberEdit.PatreonSubscriber.LifetimeAmount >= minimumDonationAmount;
         }
 
-        double minimumDonationAmount { get; set; } = 0.0;
+        public double minimumDonationAmount { get; set; } = 0.0;
     }
 }

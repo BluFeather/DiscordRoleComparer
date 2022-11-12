@@ -13,7 +13,9 @@
                 Click="PullDiscordGuilds_Clicked"/>
         <TextBox HorizontalAlignment="Left" Margin="133,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="396" x:Name="TokenTextBox"/>
         <TextBlock HorizontalAlignment="Left" Margin="87,38,0,0" TextWrapping="Wrap" Text="Token" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="87,127,0,0" VerticalAlignment="Top" Width="442" x:Name="GuildsDropdown" ItemsSource="{Binding GuildDatas}" SelectedIndex="0"/>
+        <ComboBox HorizontalAlignment="Left" Margin="87,183,0,0" VerticalAlignment="Top" Width="442" x:Name="GuildsDropdown" ItemsSource="{Binding GuildDatas}" SelectedIndex="0"/>
+        <Button Content="Create DiscordRoleEdits List" HorizontalAlignment="Left" Margin="87,123,0,0" VerticalAlignment="Top" Height="46" Width="208"
+            Click="CreateDiscordRoleEdits_Clicked"/>
 
     </Grid>
 </Window>
