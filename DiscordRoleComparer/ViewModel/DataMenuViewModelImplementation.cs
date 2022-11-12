@@ -43,17 +43,11 @@ namespace DiscordRoleComparer
             {
                 System.Windows.MessageBox.Show(exception.Message);
             }
-            
         }
 
         public override void CreateDiscordRoleEdits()
         {
             List<DiscordMemberEdits> discordMemberEdits = CreateDiscordMemberEditsList();
-
-            foreach (var item in discordMemberEdits)
-            {
-                Debug.WriteLine($"{item.discordMember.SummarizeAsString()} | {item.PatreonSubscriber.SummarizeAsString()}");
-            }
         }
 #endregion
 
@@ -66,9 +60,8 @@ namespace DiscordRoleComparer
             {
                 if (patreonSubscribersList.ContainsKey(patreonSubscriber.Discord))
                 {
-                    PatreonSubscriber listedPatreonSubscriber = patreonSubscribersList[patreonSubscriber.Discord];
-                    patreonSubscribersList.Remove(patreonSubscriber.Discord);
-                    patreonSubscriber.CombineIfDiscordsMatch(listedPatreonSubscriber);
+                    patreonSubscribersList[patreonSubscriber.Discord].CombineIfDiscordsMatch(patreonSubscriber);
+                    continue;
                 }
                 patreonSubscribersList.Add(patreonSubscriber.Discord, patreonSubscriber);
             }
@@ -87,6 +80,7 @@ namespace DiscordRoleComparer
             return discordMemberEdits;
         }
 
+        #region I/O
         private FileInfo AskForCsvFile()
         {
             var openFileDialog = new System.Windows.Forms.OpenFileDialog() { Filter = "CSV | *.csv"};
@@ -106,5 +100,6 @@ namespace DiscordRoleComparer
             }
             return null;
         }
+        #endregion
     }
 }
