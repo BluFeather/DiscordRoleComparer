@@ -15,9 +15,9 @@ namespace DiscordRoleComparer
             File.WriteAllText(path, jsonString);
         }
 
-        public static SaveData LoadSaveDataFromDisk()
+        public static SaveData LoadOrCreateSaveDataFromDisk()
         {
-            if (!File.Exists(saveFileName)) return null;
+            if (!File.Exists(saveFileName)) return new SaveData();
             var jsonString = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, saveFileName));
             return JsonConvert.DeserializeObject<SaveData>(jsonString);
         }

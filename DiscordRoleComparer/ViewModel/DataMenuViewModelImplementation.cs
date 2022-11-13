@@ -11,23 +11,14 @@ namespace DiscordRoleComparer
         public DataMenuViewModelImplementation(DataMenu dataMenu)
         {
             DataMenuView = dataMenu;
+            saveData = SaveDataHandler.LoadOrCreateSaveDataFromDisk();
         }
 
         DataMenu DataMenuView;
 
-        #region View Input Events
-        public override async void PullDiscordGuilds()
-        {
-#if DEBUG
-            var guildData = LoadGuildDataFromDisk();
-            GuildDatas = new List<GuildData>() { guildData };
-            Debug.WriteLine(guildData.SummarizeAsString());
-#else
-            DiscordFacade discordFacade = new DiscordFacade();
-            GuildDatas = await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text);
-#endif
-        }
+        SaveData saveData;
 
+        #region View Input Events
         public override void ParseCsvFile()
         {
             FileInfo csvFile = AskForCsvFile();
@@ -42,43 +33,42 @@ namespace DiscordRoleComparer
             }
         }
 
+        public override async void PullDiscordGuilds()
+        {
+            GuildData guilds = LoadGuildDataFromDisk();
+            GuildNames.Add(guilds.Name);
+            AddGuildMembersToKnownUsersDatabase(guilds);
+            SaveDataHandler.WriteSaveDataToDisk(saveData);
+        }
+
         public override void CreateDiscordRoleEdits()
         {
-            List<DiscordMemberEdits> discordMemberEdits = CreateDiscordMemberEditsList();
-            foreach (var discordMemberEdit in discordMemberEdits)
+            throw new NotImplementedException();
+        }
+        #endregion
+
+
+        private void AddGuildMembersToKnownUsersDatabase(List<GuildData> guildData)
+        {
+            foreach (var guild in guildData)
             {
-                Debug.WriteLine($"{discordMemberEdit.DiscordMember.SummarizeAsString()} && {discordMemberEdit.PatreonSubscriber.SummarizeAsString()}");
+                AddGuildMembersToKnownUsersDatabase(guild);
             }
         }
-#endregion
 
-        protected List<DiscordMemberEdits> CreateDiscordMemberEditsList()
+        private void AddGuildMembersToKnownUsersDatabase(GuildData guildData)
         {
-            GuildData selectedGuildData = GuildDatas[DataMenuView.GuildsDropdown.SelectedIndex];
-
-            Dictionary<string, PatreonSubscriber> patreonSubscribersList = new Dictionary<string, PatreonSubscriber>();
-            foreach (PatreonSubscriber patreonSubscriber in PatreonSubscribers)
+            foreach (var member in guildData.Members)
             {
-                if (patreonSubscribersList.ContainsKey(patreonSubscriber.Discord))
+                if (saveData.DiscordMemberAliases.ContainsKey(member.UserID))
                 {
-                    patreonSubscribersList[patreonSubscriber.Discord].CombineIfDiscordsMatch(patreonSubscriber);
+                    HashSet<string> aliases = saveData.DiscordMemberAliases[member.UserID];
+                    aliases.Add(member.Username);
+                    saveData.DiscordMemberAliases[member.UserID] = aliases;
                     continue;
                 }
-                patreonSubscribersList.Add(patreonSubscriber.Discord, patreonSubscriber);
+                saveData.DiscordMemberAliases.Add(member.UserID, new HashSet<string>() { member.Username });
             }
-
-            var discordMemberEdits = new List<DiscordMemberEdits>();
-            foreach (DiscordMember discordMember in selectedGuildData.Members)
-            {
-                patreonSubscribersList.TryGetValue(discordMember.Username, out PatreonSubscriber patreonSubscriber);
-                if (patreonSubscriber == null)
-                {
-                    Debug.WriteLine($"{discordMember.Username} was not found in the Patreon Subscribers CSV!");
-                    continue;
-                }
-                discordMemberEdits.Add(new DiscordMemberEdits(selectedGuildData.ServerID, discordMember, patreonSubscriber));
-            }
-            return discordMemberEdits;
         }
 
         #region I/O

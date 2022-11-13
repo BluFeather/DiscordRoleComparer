@@ -4,7 +4,8 @@ namespace DiscordRoleComparer
 {
     public class SaveData
     {
-        public List<DiscordMemberAliases> DiscordMemberAliases { get; set; } = new List<DiscordMemberAliases>();
+        // Dictionary of discord IDs to known Usernames.
+        public Dictionary<ulong, HashSet<string>> DiscordMemberAliases { get; set; } = new Dictionary<ulong, HashSet<string>>();
 
         public override string ToString()
         {

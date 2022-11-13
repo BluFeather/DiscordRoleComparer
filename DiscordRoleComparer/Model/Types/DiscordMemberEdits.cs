@@ -4,16 +4,13 @@ namespace DiscordRoleComparer
 {
     public class DiscordMemberEdits
     {
-        public DiscordMemberEdits(ulong serverID, DiscordMember discordMember, PatreonSubscriber patreonSubscriber)
+        public DiscordMemberEdits(ulong discordID, PatreonSubscriber patreonSubscriber)
         {
-            ServerID = serverID;
-            DiscordMember = discordMember;
+            DiscordID = discordID;
             PatreonSubscriber = patreonSubscriber;
         }
 
-        public ulong ServerID { get; }
-
-        public DiscordMember DiscordMember { get; }
+        public ulong DiscordID { get; }
 
         public PatreonSubscriber PatreonSubscriber { get; }
 

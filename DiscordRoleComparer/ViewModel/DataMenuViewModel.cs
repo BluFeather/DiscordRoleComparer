@@ -24,17 +24,17 @@ namespace DiscordRoleComparer
             }
         }
 
-        private List<GuildData> _guildDatas = new List<GuildData>();
+        private HashSet<string> _guildNames = new HashSet<string>();
 
-        public List<GuildData> GuildDatas
+        public HashSet<string> GuildNames
         {
             get 
             {
-                return _guildDatas;
+                return _guildNames;
             }
             protected set
             {
-                _guildDatas = value;
+                _guildNames = value;
                 OnPropertyChanged();
             }
         }
