@@ -10,7 +10,7 @@ namespace DiscordRoleComparer
 
         public static void WriteSaveDataToDisk(SaveData saveData)
         {
-            string jsonString = JsonConvert.SerializeObject(saveData);
+            string jsonString = JsonConvert.SerializeObject(saveData, Formatting.Indented);
             string path = saveFileName;
             File.WriteAllText(path, jsonString);
         }

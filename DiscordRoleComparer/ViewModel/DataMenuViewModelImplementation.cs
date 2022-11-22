@@ -60,14 +60,7 @@ namespace DiscordRoleComparer
         {
             foreach (var member in guildData.Members)
             {
-                if (saveData.DiscordMemberAliases.ContainsKey(member.UserID))
-                {
-                    HashSet<string> aliases = saveData.DiscordMemberAliases[member.UserID];
-                    aliases.Add(member.Username);
-                    saveData.DiscordMemberAliases[member.UserID] = aliases;
-                    continue;
-                }
-                saveData.DiscordMemberAliases.Add(member.UserID, new HashSet<string>() { member.Username });
+                saveData.DiscordMemberIDs.TryAdd(member.Username, member.UserID);
             }
         }
 
