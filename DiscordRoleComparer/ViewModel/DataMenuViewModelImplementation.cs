@@ -18,6 +18,18 @@ namespace DiscordRoleComparer
 
         SaveData saveData;
 
+        List<GuildData> guilds = new List<GuildData>();
+
+        List<ChangeListItem> ChangeListItems = new List<ChangeListItem>();
+
+        private GuildData SelectedGuild
+        {
+            get
+            {
+                return guilds.Count > 0 ? guilds[0] : null;
+            }
+        }
+
         #region View Input Events
         public override void ParseCsvFile()
         {
@@ -35,15 +47,37 @@ namespace DiscordRoleComparer
 
         public override async void PullDiscordGuilds()
         {
-            GuildData guilds = LoadGuildDataFromDisk();
-            GuildNames.Add(guilds.Name);
+            guilds.Add(LoadGuildDataFromDisk());
+            GuildNames.Add(guilds[0]?.Name);
             AddGuildMembersToKnownUsersDatabase(guilds);
             SaveDataHandler.WriteSaveDataToDisk(saveData);
         }
 
         public override void CreateDiscordRoleEdits()
         {
-            throw new NotImplementedException();
+            if (PatreonSubscribers.Count <= 0 || guilds.Count <= 0) return;
+            ChangeListItems.Clear();
+
+            foreach (PatreonSubscriber subscriber in PatreonSubscribers)
+            {
+                ChangeListItem changeListItem = new ChangeListItem()
+                {
+                    Username = subscriber.Discord
+                };
+
+                if (saveData.DiscordMemberIDs.TryGetValue(subscriber.Discord, out ulong discordID))
+                {
+                    var result = SelectedGuild.TryFindMemberByID(discordID, out DiscordMember discordMember);
+                    changeListItem.DiscordID = discordID;
+                    changeListItem.ExistingRoles = discordMember.RoleIDs;
+                }
+
+                ChangeListItems.Add(changeListItem);
+            }
+            foreach (ChangeListItem item in ChangeListItems)
+            {
+                Debug.WriteLine(item.ToString());
+            }
         }
         #endregion
 

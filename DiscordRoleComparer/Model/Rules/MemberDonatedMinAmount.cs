@@ -1,10 +1,13 @@
-﻿namespace DiscordRoleComparer
+﻿using System;
+
+namespace DiscordRoleComparer
 {
     public class MemberDonatedMinAmount : Rule
     {
-        public override bool MemberMatchesRule(DiscordMemberEdits discordMemberEdit)
+        public override bool MemberMatchesRule(ChangeListItem changeListItem)
         {
-            return discordMemberEdit.PatreonSubscriber.LifetimeAmount >= minimumDonationAmount;
+            throw new NotImplementedException();
+            //return discordMemberEdit.PatreonSubscriber.LifetimeAmount >= minimumDonationAmount;
         }
 
         public double minimumDonationAmount { get; set; } = 0.0;

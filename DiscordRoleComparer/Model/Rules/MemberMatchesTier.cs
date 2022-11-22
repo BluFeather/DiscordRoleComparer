@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DiscordRoleComparer
 {
     public class MemberMatchesTier : Rule
     {
-        public override bool MemberMatchesRule(DiscordMemberEdits discordMemberEdit)
+        public override bool MemberMatchesRule(ChangeListItem changeListItem)
         {
-            return discordMemberEdit.PatreonSubscriber.Tier == TierName;
+            throw new NotImplementedException();
+            //return discordMemberEdit.PatreonSubscriber.Tier == TierName;
         }
 
         public string TierName { get; set; } = "";

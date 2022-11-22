@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace DiscordRoleComparer.Model
+namespace DiscordRoleComparer
 {
     public class AppSaveLoad
     {

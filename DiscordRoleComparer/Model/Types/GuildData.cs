@@ -20,6 +20,34 @@ namespace DiscordRoleComparer
 
         public Dictionary<ulong, string> Roles;
 
+        public bool TryFindMemberByID(ulong discordID, out DiscordMember discordMember)
+        {
+            foreach (DiscordMember member in Members)
+            {
+                if (member.UserID == discordID)
+                {
+                    discordMember = member;
+                    return true;
+                }
+            }
+            discordMember = null;
+            return false;
+        }
+
+        public bool TryFindMemberByName(string discordUsername, out DiscordMember discordMember)
+        {
+            foreach (DiscordMember member in Members)
+            {
+                if (member.Username == discordUsername)
+                {
+                    discordMember = member;
+                    return true;
+                }
+            }
+            discordMember = null;
+            return false;
+        }
+
         public override string ToString()
         {
             return Name;
