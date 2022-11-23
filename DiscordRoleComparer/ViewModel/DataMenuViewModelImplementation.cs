@@ -52,31 +52,34 @@ namespace DiscordRoleComparer
             AddGuildMembersToKnownUsersDatabase(guilds);
             SaveDataHandler.WriteSaveDataToDisk(saveData);
         }
-
+        
         public override void CreateDiscordRoleEdits()
         {
             if (PatreonSubscribers.Count <= 0 || guilds.Count <= 0) return;
             ChangeListItems.Clear();
 
-            foreach (PatreonSubscriber subscriber in PatreonSubscribers)
+            foreach (var discordMember in SelectedGuild.Members)
             {
                 ChangeListItem changeListItem = new ChangeListItem()
                 {
-                    Username = subscriber.Discord
+                    DiscordID = discordMember.UserID,
+                    DiscordUsername = discordMember.Username,
+                    ExistingRoles = discordMember.RoleIDs
                 };
 
-                if (saveData.DiscordMemberIDs.TryGetValue(subscriber.Discord, out ulong discordID))
+                if (saveData.DiscordMemberAliases.TryGetValue(discordMember.UserID, out HashSet<string> knownUsernames))
                 {
-                    var result = SelectedGuild.TryFindMemberByID(discordID, out DiscordMember discordMember);
-                    changeListItem.DiscordID = discordID;
-                    changeListItem.ExistingRoles = discordMember.RoleIDs;
+                    foreach (string username in knownUsernames)
+                    {
+                        if (PatreonSubscribers.TryFindPatronByUsername(username, out PatreonSubscriber patreonSubscriber))
+                        {
+                            changeListItem.PatreonSubscriberData = patreonSubscriber;
+                            break;
+                        }
+                    }
                 }
 
                 ChangeListItems.Add(changeListItem);
-            }
-            foreach (ChangeListItem item in ChangeListItems)
-            {
-                Debug.WriteLine(item.ToString());
             }
         }
         #endregion
@@ -94,7 +97,7 @@ namespace DiscordRoleComparer
         {
             foreach (var member in guildData.Members)
             {
-                saveData.DiscordMemberIDs.TryAdd(member.Username, member.UserID);
+                saveData.AddDiscordAliasToSaveData(member.UserID, member.Username);
             }
         }
 

@@ -7,10 +7,10 @@ namespace DiscordRoleComparer
 {
     public static class PatreonCsvParser
     {
-        public static List<PatreonSubscriber> ParsePatreonCsvFile(FileInfo csvFile)
+        public static PatreonCsvResult ParsePatreonCsvFile(FileInfo csvFile)
         {
             List<PatreonSubscriber> result = new List<PatreonSubscriber>();
-            
+
             using (TextFieldParser parser = new TextFieldParser(csvFile.FullName))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -37,7 +37,7 @@ namespace DiscordRoleComparer
                 }
             }
 
-            return result;
+            return new PatreonCsvResult(result);
         }
     }
 }

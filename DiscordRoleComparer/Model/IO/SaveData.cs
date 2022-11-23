@@ -4,12 +4,23 @@ namespace DiscordRoleComparer
 {
     public class SaveData
     {
-        // Dictonary of encountered Usernames with Discriminators to Discord IDs.
-        public Dictionary<string, ulong> DiscordMemberIDs { get; set; } = new Dictionary<string, ulong>();
+        // Dictionary of discord IDs to known Usernames.
+        public Dictionary<ulong, HashSet<string>> DiscordMemberAliases { get; set; } = new Dictionary<ulong, HashSet<string>>();
+
+        public void AddDiscordAliasToSaveData(ulong discordID, string username)
+        {
+            if (DiscordMemberAliases.ContainsKey(discordID))
+            {
+                DiscordMemberAliases[discordID].Add(username);
+                return;
+            }
+            
+            DiscordMemberAliases.Add(discordID, new HashSet<string>() { username });
+        }
 
         public override string ToString()
         {
-            return $"Known Discord Users: {DiscordMemberIDs.Count}";
+            return $"Known Discord Users: {DiscordMemberAliases.Count}";
         }
     }
 }

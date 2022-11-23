@@ -9,9 +9,9 @@ namespace DiscordRoleComparer
         public DataMenuViewModel() { }
 
         #region View Accessed Properties
-        private List<PatreonSubscriber> _patreonSubscribers = new List<PatreonSubscriber>();
+        private PatreonCsvResult _patreonSubscribers = null;
 
-        public List<PatreonSubscriber> PatreonSubscribers
+        public PatreonCsvResult PatreonSubscribers
         {
             get
             {
