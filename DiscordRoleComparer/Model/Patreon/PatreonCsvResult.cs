@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DiscordRoleComparer
 {
@@ -9,6 +7,10 @@ namespace DiscordRoleComparer
         public PatreonCsvResult(List<PatreonSubscriber> patrons)
         {
             Patrons = patrons;
+            foreach (var patron in patrons)
+            {
+                TierNames.Add(patron.Tier);
+            }
         }
 
         List<PatreonSubscriber> Patrons { get; }
@@ -34,5 +36,7 @@ namespace DiscordRoleComparer
             patreonSubscriber = null;
             return false;
         }
+
+        public static HashSet<string> TierNames { get; private set; } = new HashSet<string>();
     }
 }

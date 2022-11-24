@@ -81,6 +81,9 @@ namespace DiscordRoleComparer
 
                 ChangeListItems.Add(changeListItem);
             }
+
+            CreateRoleRules(SelectedGuild);
+            SetTierNamesForRoleRules(PatreonSubscribers);
         }
         #endregion
 
@@ -139,6 +142,25 @@ namespace DiscordRoleComparer
 
             string jsonString = File.ReadAllText(jsonFile.FullName);
             return JsonConvert.DeserializeObject<GuildData>(jsonString);
+        }
+        #endregion
+
+        #region Role Rules
+        private List<RoleRule> RoleRules = new List<RoleRule>();
+
+        private void CreateRoleRules(GuildData guildData)
+        {
+            RoleRules.Clear();
+            foreach (KeyValuePair<ulong, string> role in guildData.Roles)
+            {
+                var roleRule = new RoleRule(role.Value, role.Key);
+                RoleRules.Add(roleRule);
+            }
+        }
+
+        private void SetTierNamesForRoleRules(PatreonCsvResult patreonCsvResult)
+        {
+            RoleRule.RoleNames = PatreonCsvResult.TierNames;
         }
         #endregion
     }
