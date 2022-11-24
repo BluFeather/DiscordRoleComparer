@@ -82,8 +82,96 @@ namespace DiscordRoleComparer
                 ChangeListItems.Add(changeListItem);
             }
 
-            RoleRules = CreateRoleRules(SelectedGuild);
-            RoleRule.PatreonTierNames = SetTierNamesForRoleRules(PatreonSubscribers);
+            // Hacky Comparison Logic Here
+            foreach (var item in SelectedGuild.Roles)
+            {
+                Debug.WriteLine($"{item.Key} = {item.Value}\n");
+            }
+
+            foreach (ChangeListItem item in ChangeListItems)
+            {
+                if (!ExplicitRuleSet.MemberFoundInCsv(item))
+                {
+                    Debug.WriteLine($"{item.DiscordUsername} was not found in CSV. Skipping!");
+                    continue;
+                }
+
+                if (ExplicitRuleSet.MemberRemainsUnedited(item))
+                {
+                    Debug.WriteLine($"{item.DiscordUsername} has spent $60 or more overall and will not be edited.");
+                    continue;
+                }
+
+                if (!ExplicitRuleSet.MemberIsStillSubscribed(item))
+                {
+                    Debug.WriteLine($"{item.DiscordUsername} is no longer subscribed and should have their roles removed.");
+                    continue;
+                }
+
+                if (ExplicitRuleSet.MemberNeedsEquusMinor(item))
+                {
+                    const ulong equusMinorRoleID = 559794815223726102;
+                    if (item.PatreonSubscriberData.Tier == "Equus Minor (Early Access)")
+                    {
+                        if (item.ExistingRoles.Contains(equusMinorRoleID))
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Minor.");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Minor!");
+                        }
+                    }
+                }
+
+                if (ExplicitRuleSet.MemberNeedsEquusMagnus(item))
+                {
+                    const ulong equusMagnusRoleID = 559795290748747806;
+                    if (item.PatreonSubscriberData.Tier == "Equus Magnus")
+                    {
+                        if (item.ExistingRoles.Contains(equusMagnusRoleID))
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Magnus.");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Magnus!");
+                        }
+                    }
+                }
+
+                if (ExplicitRuleSet.MemberNeedsEquusMinimi(item))
+                {
+                    const ulong equusMinimiRoleID = 559798726789562370;
+                    if (item.PatreonSubscriberData.Tier == "Equus Minimi")
+                    {
+                        if (item.ExistingRoles.Contains(equusMinimiRoleID))
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Minimi.");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Minimi!");
+                        }
+                    }
+                }
+
+                if (ExplicitRuleSet.MemberNeedsEquusMaximus(item))
+                {
+                    const ulong equusMaximusRoleID = 559795531195482154;
+                    if (item.PatreonSubscriberData.Tier == "Equus Maximus")
+                    {
+                        if (item.ExistingRoles.Contains(equusMaximusRoleID))
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Maximus.");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Maximus!");
+                        }
+                    }
+                }
+            }
         }
         #endregion
 
