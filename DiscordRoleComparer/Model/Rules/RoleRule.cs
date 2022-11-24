@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DiscordRoleComparer
 {
@@ -18,6 +16,6 @@ namespace DiscordRoleComparer
 
         private RoleRequirement roleRequirement { get; set; } = null;
 
-        public static HashSet<string> RoleNames { get; set; } = new HashSet<string>();
+        public static HashSet<string> PatreonTierNames { get; set; } = new HashSet<string>();
     }
 }

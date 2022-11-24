@@ -82,11 +82,10 @@ namespace DiscordRoleComparer
                 ChangeListItems.Add(changeListItem);
             }
 
-            CreateRoleRules(SelectedGuild);
-            SetTierNamesForRoleRules(PatreonSubscribers);
+            RoleRules = CreateRoleRules(SelectedGuild);
+            RoleRule.PatreonTierNames = SetTierNamesForRoleRules(PatreonSubscribers);
         }
         #endregion
-
 
         private void AddGuildMembersToKnownUsersDatabase(List<GuildData> guildData)
         {
@@ -148,19 +147,20 @@ namespace DiscordRoleComparer
         #region Role Rules
         private List<RoleRule> RoleRules = new List<RoleRule>();
 
-        private void CreateRoleRules(GuildData guildData)
+        private List<RoleRule> CreateRoleRules(GuildData guildData)
         {
-            RoleRules.Clear();
+            List<RoleRule> roleRules = new List<RoleRule>();
             foreach (KeyValuePair<ulong, string> role in guildData.Roles)
             {
                 var roleRule = new RoleRule(role.Value, role.Key);
-                RoleRules.Add(roleRule);
+                roleRules.Add(roleRule);
             }
+            return roleRules;
         }
 
-        private void SetTierNamesForRoleRules(PatreonCsvResult patreonCsvResult)
+        private HashSet<string> SetTierNamesForRoleRules(PatreonCsvResult patreonCsvResult)
         {
-            RoleRule.RoleNames = PatreonCsvResult.TierNames;
+            return PatreonCsvResult.TierNames;
         }
         #endregion
     }
