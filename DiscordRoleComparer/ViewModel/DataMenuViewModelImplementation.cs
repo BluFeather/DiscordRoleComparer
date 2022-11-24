@@ -47,10 +47,18 @@ namespace DiscordRoleComparer
 
         public override async void PullDiscordGuilds()
         {
-            guilds.Add(LoadGuildDataFromDisk());
+            // Live Data
+            var discordFacade = new DiscordFacade();
+            guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
             GuildNames.Add(guilds[0]?.Name);
             AddGuildMembersToKnownUsersDatabase(guilds);
             SaveDataHandler.WriteSaveDataToDisk(saveData);
+
+            // Debug Data
+            //guilds.Add(LoadGuildDataFromDisk());
+            //GuildNames.Add(guilds[0]?.Name);
+            //AddGuildMembersToKnownUsersDatabase(guilds);
+            //SaveDataHandler.WriteSaveDataToDisk(saveData);
         }
         
         public override void CreateDiscordRoleEdits()
@@ -83,11 +91,6 @@ namespace DiscordRoleComparer
             }
 
             // Hacky Comparison Logic Here
-            foreach (var item in SelectedGuild.Roles)
-            {
-                Debug.WriteLine($"{item.Key} = {item.Value}\n");
-            }
-
             foreach (ChangeListItem item in ChangeListItems)
             {
                 if (!ExplicitRuleSet.MemberFoundInCsv(item))
