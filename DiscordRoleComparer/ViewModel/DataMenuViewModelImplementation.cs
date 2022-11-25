@@ -51,17 +51,17 @@ namespace DiscordRoleComparer
         public override async void PullDiscordGuilds()
         {
             // Live Data
-            //discordFacade = new DiscordFacade();
-            //guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
-            //GuildNames.Add(guilds[0]?.Name);
-            //AddGuildMembersToKnownUsersDatabase(guilds);
-            //SaveDataHandler.WriteSaveDataToDisk(saveData);
-
-            // Debug Data
-            guilds.Add(LoadGuildDataFromDisk());
+            discordFacade = new DiscordFacade();
+            guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
             GuildNames.Add(guilds[0]?.Name);
             AddGuildMembersToKnownUsersDatabase(guilds);
             SaveDataHandler.WriteSaveDataToDisk(saveData);
+
+            // Debug Data
+            //guilds.Add(LoadGuildDataFromDisk());
+            //GuildNames.Add(guilds[0]?.Name);
+            //AddGuildMembersToKnownUsersDatabase(guilds);
+            //SaveDataHandler.WriteSaveDataToDisk(saveData);
         }
         
         public override void CreateDiscordRoleEdits()
