@@ -51,17 +51,17 @@ namespace DiscordRoleComparer
         public override async void PullDiscordGuilds()
         {
             // Live Data
-            discordFacade = new DiscordFacade();
-            guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
-            GuildNames.Add(guilds[0]?.Name);
-            AddGuildMembersToKnownUsersDatabase(guilds);
-            SaveDataHandler.WriteSaveDataToDisk(saveData);
-
-            // Debug Data
-            //guilds.Add(LoadGuildDataFromDisk());
+            //discordFacade = new DiscordFacade();
+            //guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
             //GuildNames.Add(guilds[0]?.Name);
             //AddGuildMembersToKnownUsersDatabase(guilds);
             //SaveDataHandler.WriteSaveDataToDisk(saveData);
+
+            // Debug Data
+            guilds.Add(LoadGuildDataFromDisk());
+            GuildNames.Add(guilds[0]?.Name);
+            AddGuildMembersToKnownUsersDatabase(guilds);
+            SaveDataHandler.WriteSaveDataToDisk(saveData);
         }
         
         public override void CreateDiscordRoleEdits()
@@ -121,6 +121,11 @@ namespace DiscordRoleComparer
 
                 if (!ExplicitRuleSet.MemberIsStillSubscribed(item))
                 {
+                    if (item.DiscordUsername.Contains("zenith"))
+                    {
+                        Debug.WriteLine(item.PatreonSubscriberData.SummarizeAsString());
+                    }
+
                     Debug.WriteLine($"{item.DiscordUsername} is no longer subscribed and should have their roles removed.");
                     foreach (ulong roleID in item.ExistingRoles)
                     {
