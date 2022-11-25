@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DiscordRoleComparer
 {
@@ -45,20 +46,22 @@ namespace DiscordRoleComparer
             }
         }
 
+        DiscordFacade discordFacade;
+
         public override async void PullDiscordGuilds()
         {
             // Live Data
-            var discordFacade = new DiscordFacade();
-            guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
-            GuildNames.Add(guilds[0]?.Name);
-            AddGuildMembersToKnownUsersDatabase(guilds);
-            SaveDataHandler.WriteSaveDataToDisk(saveData);
-
-            // Debug Data
-            //guilds.Add(LoadGuildDataFromDisk());
+            //discordFacade = new DiscordFacade();
+            //guilds.AddRange(await discordFacade.AsyncPullGuildData(DataMenuView.TokenTextBox.Text));
             //GuildNames.Add(guilds[0]?.Name);
             //AddGuildMembersToKnownUsersDatabase(guilds);
             //SaveDataHandler.WriteSaveDataToDisk(saveData);
+
+            // Debug Data
+            guilds.Add(LoadGuildDataFromDisk());
+            GuildNames.Add(guilds[0]?.Name);
+            AddGuildMembersToKnownUsersDatabase(guilds);
+            SaveDataHandler.WriteSaveDataToDisk(saveData);
         }
         
         public override void CreateDiscordRoleEdits()
@@ -90,17 +93,28 @@ namespace DiscordRoleComparer
                 ChangeListItems.Add(changeListItem);
             }
 
+            UpdateRoles();
+        }
+        private async void UpdateRoles()
+        {
+            await Task.Delay(150); // Helps prevent going over Discord's requests per second limit
+
             // Hacky Comparison Logic Here
             foreach (ChangeListItem item in ChangeListItems)
             {
                 if (!ExplicitRuleSet.MemberFoundInCsv(item))
                 {
-                    Debug.WriteLine($"{item.DiscordUsername} was not found in CSV. Skipping!");
+                    Debug.WriteLine($"{item.DiscordUsername} was not found in CSV and their roles need to be manually adjusted!");
                     continue;
                 }
 
                 if (ExplicitRuleSet.MemberRemainsUnedited(item))
                 {
+                    if (item.DiscordUsername.Contains("zenith"))
+                    {
+                        Debug.WriteLine(item.PatreonSubscriberData.SummarizeAsString());
+                    }
+
                     Debug.WriteLine($"{item.DiscordUsername} has spent $60 or more overall and will not be edited.");
                     continue;
                 }
@@ -108,6 +122,10 @@ namespace DiscordRoleComparer
                 if (!ExplicitRuleSet.MemberIsStillSubscribed(item))
                 {
                     Debug.WriteLine($"{item.DiscordUsername} is no longer subscribed and should have their roles removed.");
+                    foreach (ulong roleID in item.ExistingRoles)
+                    {
+                        //discordFacade.AsyncRemoveRole(item.DiscordID, roleID);
+                    }
                     continue;
                 }
 

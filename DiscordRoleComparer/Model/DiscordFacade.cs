@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -35,11 +36,14 @@ namespace DiscordRoleComparer
         #region Discord.NET
         private DiscordSocketClient client;
 
+        private SocketGuild socketGuild;
+
         private async Task<bool> ConnectClientAsync(string token)
         {
             if (client?.ConnectionState == ConnectionState.Connected) return true;
 
             client = new DiscordSocketClient(new DiscordSocketConfig() { GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers });
+            client.GuildAvailable += OnGuildAvailable;
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
 
@@ -56,6 +60,12 @@ namespace DiscordRoleComparer
 
             Debug.WriteLine($"Connection State: {client.ConnectionState}");
             return elapsedTime <= timeoutMillisecondsDelay;
+        }
+
+        private Task OnGuildAvailable(SocketGuild arg)
+        {
+            socketGuild = arg;
+            return Task.CompletedTask;
         }
 
         private async Task<List<DiscordMember>> AsyncPullGuildMembers(SocketGuild socketGuild)
@@ -85,14 +95,14 @@ namespace DiscordRoleComparer
             return roles;
         }
 
-        public async void AsyncRemoveRole(SocketGuild socketGuild, DiscordMember discordMember, ulong roleID)
+        public async void AsyncRemoveRole(ulong discordMemberID, ulong roleID)
         {
-            await socketGuild.GetUser(discordMember.UserID)?.RemoveRoleAsync(roleID);
+            await socketGuild.GetUser(discordMemberID)?.RemoveRoleAsync(roleID);
         }
 
-        public async void AsyncAddRole(SocketGuild socketGuild, DiscordMember discordMember, ulong roleID)
+        public async void AsyncAddRole(ulong discordMemberID, ulong roleID)
         {
-            await socketGuild.GetUser(discordMember.UserID)?.AddRoleAsync(roleID);
+            await socketGuild.GetUser(discordMemberID)?.AddRoleAsync(roleID);
         }
         #endregion
     }

@@ -10,6 +10,7 @@ namespace DiscordRoleComparer
         public static PatreonCsvResult ParsePatreonCsvFile(FileInfo csvFile)
         {
             List<PatreonSubscriber> result = new List<PatreonSubscriber>();
+            Dictionary<string, PatreonSubscriber> subscriberDictionary = new Dictionary<string, PatreonSubscriber>();
 
             using (TextFieldParser parser = new TextFieldParser(csvFile.FullName))
             {
@@ -33,6 +34,12 @@ namespace DiscordRoleComparer
                     if (string.IsNullOrWhiteSpace(discord)) continue;
 
                     PatreonSubscriber patreonSubscriber = new PatreonSubscriber(discord, patronStatus, lifetimeAmount, tier, lastChargeDate);
+                    if (subscriberDictionary.TryGetValue(patreonSubscriber.Discord, out PatreonSubscriber existingSubscriber))
+                    {
+                        patreonSubscriber.CombineIfDiscordsMatch(existingSubscriber);
+                        result.Remove(existingSubscriber);
+                    }
+                    subscriberDictionary.TryAdd(patreonSubscriber.Discord, patreonSubscriber);
                     result.Add(patreonSubscriber);
                 }
             }
