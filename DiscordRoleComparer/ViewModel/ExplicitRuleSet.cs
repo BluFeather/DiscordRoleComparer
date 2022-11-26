@@ -7,7 +7,7 @@
             return changeListItem.FoundInPatreonCSV;
         }
 
-        public static bool MemberRemainsUnedited(ChangeListItem changeListItem)
+        public static bool MemberDonatesSixtyOrMore(ChangeListItem changeListItem)
         {
             return changeListItem.PatreonSubscriberData.LifetimeAmount >= 60;
         }

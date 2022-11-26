@@ -97,40 +97,26 @@ namespace DiscordRoleComparer
         }
         private async void UpdateRoles()
         {
-            await Task.Delay(150); // Helps prevent going over Discord's requests per second limit
-
             // Hacky Comparison Logic Here
             foreach (ChangeListItem item in ChangeListItems)
             {
+                await Task.Delay(25); // Helps prevent going over Discord's requests per second limit
+
                 if (!ExplicitRuleSet.MemberFoundInCsv(item))
                 {
-                    Debug.WriteLine($"{item.DiscordUsername} was not found in CSV and their roles need to be manually adjusted!");
+                    Debug.WriteLine($"{item.DiscordUsername} Not Found in CSV. Requires Manual Adjustment!");
                     continue;
                 }
 
-                if (ExplicitRuleSet.MemberRemainsUnedited(item))
+                if (ExplicitRuleSet.MemberDonatesSixtyOrMore(item))
                 {
-                    if (item.DiscordUsername.Contains("zenith"))
-                    {
-                        Debug.WriteLine(item.PatreonSubscriberData.SummarizeAsString());
-                    }
-
-                    Debug.WriteLine($"{item.DiscordUsername} has spent $60 or more overall and will not be edited.");
+                    Debug.WriteLine($"{item.DiscordUsername} has spent $60 or more.");
                     continue;
                 }
 
                 if (!ExplicitRuleSet.MemberIsStillSubscribed(item))
                 {
-                    if (item.DiscordUsername.Contains("zenith"))
-                    {
-                        Debug.WriteLine(item.PatreonSubscriberData.SummarizeAsString());
-                    }
-
-                    Debug.WriteLine($"{item.DiscordUsername} is no longer subscribed and should have their roles removed.");
-                    foreach (ulong roleID in item.ExistingRoles)
-                    {
-                        //discordFacade.AsyncRemoveRole(item.DiscordID, roleID);
-                    }
+                    Debug.WriteLine($"{item.DiscordUsername} Not Subscribed and Has Not Spent $60 or more!");
                     continue;
                 }
 
@@ -141,11 +127,11 @@ namespace DiscordRoleComparer
                     {
                         if (item.ExistingRoles.Contains(equusMinorRoleID))
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Minor.");
+                            Debug.WriteLine($"{item.DiscordUsername} already has Equus Minor.");
                         }
                         else
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Minor!");
+                            Debug.WriteLine($"{item.DiscordUsername} needs Equus Minor!");
                         }
                     }
                 }
@@ -157,11 +143,11 @@ namespace DiscordRoleComparer
                     {
                         if (item.ExistingRoles.Contains(equusMagnusRoleID))
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Magnus.");
+                            Debug.WriteLine($"{item.DiscordUsername} already has Equus Magnus.");
                         }
                         else
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Magnus!");
+                            Debug.WriteLine($"{item.DiscordUsername} needs Equus Magnus!");
                         }
                     }
                 }
@@ -173,11 +159,11 @@ namespace DiscordRoleComparer
                     {
                         if (item.ExistingRoles.Contains(equusMinimiRoleID))
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Minimi.");
+                            Debug.WriteLine($"{item.DiscordUsername} already has Equus Minimi.");
                         }
                         else
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Minimi!");
+                            Debug.WriteLine($"{item.DiscordUsername} needs Equus Minimi!");
                         }
                     }
                 }
@@ -189,11 +175,11 @@ namespace DiscordRoleComparer
                     {
                         if (item.ExistingRoles.Contains(equusMaximusRoleID))
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} is already assigned Equus Maximus.");
+                            Debug.WriteLine($"{item.DiscordUsername} already has Equus Maximus.");
                         }
                         else
                         {
-                            Debug.WriteLine($"{item.DiscordUsername} needs to be assigned Equus Maximus!");
+                            Debug.WriteLine($"{item.DiscordUsername} needs Equus Maximus!");
                         }
                     }
                 }
