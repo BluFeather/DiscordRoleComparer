@@ -4,16 +4,27 @@ namespace DiscordRoleComparer
 {
     public class DiscordMember
     {
-        public DiscordMember(string handle, List<string> roles)
+        public DiscordMember(ulong userID, string username, HashSet<ulong> roleIDs)
         {
-            Handle = handle;
-            Roles = roles;
+            this.UserID = userID;
+            this.Username = username;
+            this.RoleIDs = roleIDs;
         }
 
-        public string Handle = null;
+        public ulong UserID { get; set; }
 
-        public List<string> Roles = null;
+        public string Username { get; set; }
 
-        public static HashSet<string> UniqueRoles { get; set; } = new HashSet<string>();
+        public HashSet<ulong> RoleIDs { get; set; }
+
+        public override string ToString()
+        {
+            return Username;
+        }
+
+        public string SummarizeAsString()
+        {
+            return $"{Username} (ID: {UserID}) (RoleIDs: {string.Join(", ", RoleIDs)})";
+        }
     }
 }

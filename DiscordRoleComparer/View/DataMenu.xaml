@@ -1,0 +1,21 @@
+﻿<Window x:Class="DiscordRoleComparer.DataMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiscordRoleComparer"
+        mc:Ignorable="d"
+        Title="DataMenu" Height="450" Width="800">
+    <Grid>
+        <Button Content="Parse CSV File" HorizontalAlignment="Left" Margin="87,64,0,0" VerticalAlignment="Top" Height="46" Width="208"
+                Click="ParseCsvFile_Clicked"/>
+        <Button Content="Pull Discord Guilds" HorizontalAlignment="Left" Margin="321,64,0,0" VerticalAlignment="Top" Height="46" Width="208"
+                Click="PullDiscordGuilds_Clicked"/>
+        <TextBox HorizontalAlignment="Left" Margin="133,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="396" x:Name="TokenTextBox"/>
+        <TextBlock HorizontalAlignment="Left" Margin="87,38,0,0" TextWrapping="Wrap" Text="Token" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="87,183,0,0" VerticalAlignment="Top" Width="442" x:Name="GuildsDropdown" ItemsSource="{Binding GuildNames}" SelectedIndex="0"/>
+        <Button Content="Create DiscordRoleEdits List" HorizontalAlignment="Left" Margin="87,123,0,0" VerticalAlignment="Top" Height="46" Width="208"
+            Click="CreateDiscordRoleEdits_Clicked"/>
+
+    </Grid>
+</Window>

@@ -1,27 +1,51 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DiscordRoleComparer
 {
     public class PatreonSubscriber
     {
-        public PatreonSubscriber(string discordHandle, bool activePatron, string tier, double lifetimeAmount)
+        public PatreonSubscriber(string discord, string patronStatus, double lifetimeAmount, string tier, DateTime lastChargeDate)
         {
-            DiscordHandle = discordHandle;
-            ActivePatron = activePatron;
-            Tier = tier;
+            Discord = discord;
+            PatronStatus = patronStatus;
             LifetimeAmount = lifetimeAmount;
+            Tier = tier;
+            LastChargeDate = lastChargeDate;
 
             UniqueTiers.Add(tier);
         }
 
-        public string DiscordHandle { get; set; } = "";
+        public string Discord { get; private set; } = "";
 
-        public bool ActivePatron { get; set; } = false;
+        public string PatronStatus { get; private set; } = "";
 
-        public string Tier { get; set; } = null;
+        public double LifetimeAmount { get; private set; } = 0;
 
-        public double LifetimeAmount { get; set; } = 0;
+        public string Tier { get; private set; } = null;
 
-        public static HashSet<string> UniqueTiers { get; set; } = new HashSet<string>();
+        public DateTime LastChargeDate = DateTime.MinValue;
+        
+        public string SummarizeAsString()
+        {
+            return $"Discord: {Discord} | Patron Status: {PatronStatus} | Lifetime Amount: {LifetimeAmount} | Tier: {Tier} | Last Charge Date: {LastChargeDate}";
+        }
+
+        public bool CombineIfDiscordsMatch(PatreonSubscriber patreonSubscriber)
+        {
+            if (Discord != patreonSubscriber.Discord) return false;
+
+            LifetimeAmount += patreonSubscriber.LifetimeAmount;
+
+            if (LastChargeDate < patreonSubscriber.LastChargeDate)
+            {
+                PatronStatus = patreonSubscriber.PatronStatus;
+                Tier = patreonSubscriber.Tier;
+                LastChargeDate = patreonSubscriber.LastChargeDate;
+            }
+            return true;
+        }
+
+        public static HashSet<string> UniqueTiers { get; private set; } = new HashSet<string>();
     }
 }
