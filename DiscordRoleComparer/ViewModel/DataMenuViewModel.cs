@@ -1,60 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DiscordRoleComparer
+namespace DiscordRoleComparer.ViewModel
 {
-    public abstract class DataMenuViewModel : INotifyPropertyChanged
+    public class DataMenuViewModel
     {
-        public DataMenuViewModel() { }
-
-        #region View Accessed Properties
-        private PatreonCsvResult _patreonSubscribers = null;
-
-        public PatreonCsvResult PatreonSubscribers
+        public DataMenuViewModel(DataMenu dataMenu)
         {
-            get
-            {
-                return _patreonSubscribers;
-            }
-            protected set
-            {
-                _patreonSubscribers = value;
-                OnPropertyChanged();
-            }
+            View = dataMenu;
         }
 
-        private HashSet<string> _guildNames = new HashSet<string>();
-
-        public HashSet<string> GuildNames
-        {
-            get 
-            {
-                return _guildNames;
-            }
-            protected set
-            {
-                _guildNames = value;
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        #region View Input Events
-        public abstract void ParseCsvFile();
-
-        public abstract void PullDiscordGuilds();
-
-        public abstract void CreateDiscordRoleEdits();
-        #endregion
-
-        #region INotifyPropertyChanged Implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
+        private DataMenu View { get; }
     }
 }

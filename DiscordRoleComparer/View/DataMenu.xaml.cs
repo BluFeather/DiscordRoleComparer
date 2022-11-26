@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DiscordRoleComparer.ViewModel;
+using System.Windows;
 
 namespace DiscordRoleComparer
 {
@@ -7,15 +8,9 @@ namespace DiscordRoleComparer
         public DataMenu()
         {
             InitializeComponent();
-            DataContext = new DataMenuViewModelImplementation(this);
+            DataContext = new DataMenuViewModel(this);
         }
 
-        protected DataMenuViewModel ViewModel { get { return DataContext as DataMenuViewModel; } }
-
-        private void ParseCsvFile_Clicked(object sender, RoutedEventArgs e) => ViewModel?.ParseCsvFile();
-
-        private void PullDiscordGuilds_Clicked(object sender, RoutedEventArgs e) => ViewModel?.PullDiscordGuilds();
-
-        private void CreateDiscordRoleEdits_Clicked(object sender, RoutedEventArgs e) => ViewModel?.CreateDiscordRoleEdits();
+        private DataMenuViewModel DataMenuViewModel { get { return DataContext as DataMenuViewModel; } }
     }
 }
